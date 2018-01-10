@@ -1,13 +1,13 @@
 {
-  "main.css": "static/css/main.333ee35d.css",
-  "main.css.map": "static/css/main.333ee35d.css.map",
-  "main.js": "static/js/main.beea5444.js",
-  "main.js.map": "static/js/main.beea5444.js.map",
-  "static\\media\\background.jpg": "static/media/background.910a6457.jpg",
-  "static\\media\\loader-big.gif": "static/media/loader-big.a770b679.gif",
-  "static\\media\\logo.svg": "static/media/logo.c4f95042.svg",
-  "static\\media\\rw-widgets.eot?v=4.1.0": "static/media/rw-widgets.bc7c4a59.eot",
-  "static\\media\\rw-widgets.svg?v=4.1.0": "static/media/rw-widgets.792dcd18.svg",
-  "static\\media\\rw-widgets.ttf?v=4.1.0": "static/media/rw-widgets.eceddf47.ttf",
-  "static\\media\\rw-widgets.woff?v=4.1.0": "static/media/rw-widgets.12f0820c.woff"
+  "main.css": "static/css/main.be4426bb.css",
+  "main.css.map": "static/css/main.be4426bb.css.map",
+  "main.js": "static/js/main.b23b8a8d.js",
+  "main.js.map": "static/js/main.b23b8a8d.js.map",
+  "static/media/background.jpg": "static/media/background.910a6457.jpg",
+  "static/media/loader-big.gif": "static/media/loader-big.a770b679.gif",
+  "static/media/logo.svg": "static/media/logo.f6ef32c7.svg",
+  "static/media/rw-widgets.eot?v=4.1.0": "static/media/rw-widgets.bc7c4a59.eot",
+  "static/media/rw-widgets.svg?v=4.1.0": "static/media/rw-widgets.792dcd18.svg",
+  "static/media/rw-widgets.ttf?v=4.1.0": "static/media/rw-widgets.eceddf47.ttf",
+  "static/media/rw-widgets.woff?v=4.1.0": "static/media/rw-widgets.12f0820c.woff"
 }
