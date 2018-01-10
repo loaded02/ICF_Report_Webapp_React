@@ -1,7 +1,7 @@
 {
-  "name": "react-app",
+  "name": "icf-report-react-app",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://loaded02.github.io/ICF_Report_Webapp_React/",
   "dependencies": {
     "bootstrap": "4.0.0-beta",
     "history": "^4.3.0",
@@ -23,11 +23,13 @@
     "superagent-promise": "^1.1.0"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "react-scripts build && gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

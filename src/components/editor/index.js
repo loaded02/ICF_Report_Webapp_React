@@ -82,11 +82,6 @@ class Editor extends Component {
 
 		this.createPdf = (ev) => {
 		    ev.preventDefault();
-
-		    console.log('Create Pdf.');
-			const a = document.createElement("a");
-			document.body.appendChild(a);
-			a.style = "display: none";
 			
 			const report = {
 				type: this.props.type,
@@ -101,17 +96,21 @@ class Editor extends Component {
 			};
 			
 			// File Dump
-			const json = JSON.stringify(report),
+/*			console.log('Create Pdf.');
+			const a = document.createElement("a");
+			document.body.appendChild(a);
+			a.style = "display: none";
+            const json = JSON.stringify(report),
 				blob = new Blob([json], {type: "application/json"}),
 				url = window.URL.createObjectURL(blob);
 			a.href = url;
 			a.download = "dump.json";
 			a.click();
 			
-			window.URL.revokeObjectURL(url);
+			window.URL.revokeObjectURL(url);*/
 			
 			// REST Call
-/*			agent.Report.getPdf(report).then(res => {
+			agent.Report.getPdf(report).then(res => {
 				let filename = "";
 				const disposition = res.header['content-disposition'];
 				if (disposition && disposition.indexOf('attachment') !== -1) {
@@ -148,7 +147,7 @@ class Editor extends Component {
 					
 					setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
 				}
-			})*/
+			})
         };
 
         this.addFunction = (type) => {

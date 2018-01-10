@@ -47,3 +47,4 @@ typings/
 *.tgz
 .yarn-integrity
 .env
+/build/
