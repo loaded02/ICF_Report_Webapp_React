@@ -4,6 +4,7 @@ import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from './Header';
+import NoMatch from './NoMatch';
 import Home from './home';
 import Login from '../components/Login';
 import Profile from './profile/index';
@@ -63,6 +64,7 @@ class App extends Component {
                         <Route path="/code" component={Code} />
                         <Route path="/settings" component={Settings} />
                         <Route path="/@:username" component={Profile} />
+                        <Route component={NoMatch} />
                     </Switch>
                 </div>
             );

@@ -1,7 +1,7 @@
 {
   "name": "icf-report-react-app",
   "version": "0.1.0",
-  "homepage": "https://loaded02.github.io/ICF_Report_Webapp_React/",
+  "homepage": "https://loaded02.github.io/ICF_Report_Webapp_React",
   "dependencies": {
     "bootstrap": "4.0.0-beta",
     "history": "^4.3.0",
