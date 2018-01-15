@@ -57,7 +57,7 @@ const Report = {
     getPdfFromDB: reportId =>
         superagent.get(`${API_ROOT}report/createPdfFromDB/${reportId}`).responseType('arraybuffer').use(tokenPlugin),
     getPdf: report =>
-        superagent.post(`${API_ROOT}report/createPdf`, report).set('Content-Type', 'application/json').responseType('arraybuffer').use(tokenPlugin)
+        superagent.post(`${API_ROOT}report/createPdf`, {report}).set('Content-Type', 'application/json').responseType('arraybuffer').use(tokenPlugin)
 };
 
 const Function = {
