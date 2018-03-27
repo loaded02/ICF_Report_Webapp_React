@@ -1,7 +1,8 @@
 import {
     HOME_PAGE_LOADED,
     HOME_PAGE_UNLOADED,
-    DELETE_REPORT
+    DELETE_REPORT,
+    REPORT_PDF_CREATED
 } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
@@ -18,6 +19,12 @@ export default (state = {}, action) => {
 				...state,
 				reports: state.reports.filter(r => r.id !== action.reportId)
 			};
+        case REPORT_PDF_CREATED:
+            return {
+                ...state,
+                blob: action.error ? null : action.payload,
+                errors: action.error ? {"pdf creation":["an error occured"]} : null
+            };
         default:
             return state;
     }
