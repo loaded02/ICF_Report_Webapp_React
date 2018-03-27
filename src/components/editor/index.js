@@ -24,7 +24,8 @@ Moment.locale('de');
 momentLocalizer();
 
 const mapStateToProps = state => ({
-    ...state.editor
+    ...state.editor,
+    sideNav: state.editorSideNav
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -186,6 +187,7 @@ class Editor extends Component {
                 <h1>{this.hasReport ? 'Update Report' : 'Create A New Report'}</h1>
                 <Form className="reportForm">
                     <ListErrors errors={this.props.errors} />
+                    <ListErrors errors={this.props.sideNav.errors} />
                     <FormGroup row>
                         <Label for="type" sm={2}>Type</Label>
                         <Col sm={10}>

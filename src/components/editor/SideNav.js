@@ -1,17 +1,32 @@
 import React, {Component} from 'react';
 import './SideNav.css';
 import {connect} from 'react-redux';
-import {REPORT_SUBMITTED} from "../../constants/actionTypes";
+import {
+    EDITOR_SIDENAV_LOADED,
+    EDITOR_SIDENAV_UNLOADED,
+    REPORT_DOWNLOADED,
+    REPORT_PDF_CREATED,
+    REPORT_SUBMITTED
+} from "../../constants/actionTypes";
 import agent from "../../agent";
 import Moment from "moment/moment";
 
 const mapStateToProps = state => ({
-    ...state.editor
+    ...state.editor,
+    ...state.editorSideNav
 });
 
 const mapDispatchToProps = dispatch => ({
+    onLoad: payload =>
+        dispatch({type: EDITOR_SIDENAV_LOADED, payload}),
+    onUnload: () =>
+        dispatch({ type: EDITOR_SIDENAV_UNLOADED }),
     onSubmit: report =>
         dispatch({ type: REPORT_SUBMITTED, payload: report }),
+    onCreatePdf: blob =>
+        dispatch({type: REPORT_PDF_CREATED, payload: blob}),
+    onDownloadReport: report =>
+        dispatch({type: REPORT_DOWNLOADED, payload: report})
 });
 
 class SideNav extends Component {
@@ -52,45 +67,7 @@ class SideNav extends Component {
                 contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
             };
 
-            // REST Call
-            agent.Report.getPdf(report).then(res => {
-                let filename = "";
-                const disposition = res.header['content-disposition'];
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    const matches = filenameRegex.exec(disposition);
-                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                }
-                const blob = new Blob([res.body], {type: res.type});
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                    window.navigator.msSaveBlob(blob, filename);
-                } else {
-                    const URL = window.URL || window.webkitURL;
-                    const downloadUrl = URL.createObjectURL(blob);
-
-                    if (filename) {
-                        // use HTML5 a[download] attribute to specify filename
-                        const a = document.createElement("a");
-                        // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
-                            //window.location = downloadUrl;
-                            window.open(downloadUrl, '_blank');
-                        } else {
-                            a.href = downloadUrl;
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.setAttribute("target","_blank");
-                            a.click();
-                        }
-                    } else {
-                        //window.location = downloadUrl;
-                        window.open(downloadUrl, '_blank');
-                    }
-
-                    setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-                }
-            })
+            this.props.onCreatePdf(agent.Report.getPdf(report));
         };
 
         this.dump = (ev) => {
@@ -108,7 +85,58 @@ class SideNav extends Component {
                 contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
             };
 
-            // File Dump
+            //this.props.onDownloadReport(report);
+        };
+
+        this.upload = (ev) => {
+            ev.preventDefault();
+            console.log('upload');
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.blob) { //pdf created
+            const res = nextProps.blob;
+            let filename = "";
+            const disposition = res.header['content-disposition'];
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(disposition);
+                if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+            }
+            const blob = new Blob([res.body], {type: res.type});
+            if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                window.navigator.msSaveBlob(blob, filename);
+            } else {
+                const URL = window.URL || window.webkitURL;
+                const downloadUrl = URL.createObjectURL(blob);
+
+                if (filename) {
+                    // use HTML5 a[download] attribute to specify filename
+                    const a = document.createElement("a");
+                    // safari doesn't support this yet
+                    if (typeof a.download === 'undefined') {
+                        //window.location = downloadUrl;
+                        window.open(downloadUrl, '_blank');
+                    } else {
+                        a.href = downloadUrl;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.setAttribute("target","_blank");
+                        a.click();
+                    }
+                } else {
+                    //window.location = downloadUrl;
+                    window.open(downloadUrl, '_blank');
+                }
+
+                setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                this.props.onUnload();
+            }
+        }
+        else if (nextProps.download) { // download pdf
+            const report = nextProps.download;
             const a = document.createElement("a");
             document.body.appendChild(a);
             a.style = "display: none";
@@ -120,12 +148,16 @@ class SideNav extends Component {
             a.click();
 
             window.URL.revokeObjectURL(url);
-        };
+            this.props.onUnload();
+        }
+    }
 
-        this.upload = (ev) => {
-            ev.preventDefault();
-            console.log('upload');
-        };
+    componentWillMount() {
+        this.props.onLoad({});
+    }
+
+    componentWillUnmount() {
+        this.props.onUnload();
     }
 
     get hasReport() {
@@ -138,7 +170,7 @@ class SideNav extends Component {
                 <a href="#" onClick={this.submitForm.bind(this)} title="Save on Server">
                     <i className="fa fa-floppy-o" aria-hidden="true"/></a>
                 <a href="#" onClick={this.createPdf.bind(this)} title="Create PDF"><i className="fa fa-file-pdf-o" aria-hidden="true"/></a>
-                <a href="#" onClick={this.dump.bind(this)} title="Download"><i className="fa fa-download" aria-hidden="true"/></a>
+                <a href="#" onClick={this.dump.bind(this)} className="disabled" title="Download"><i className="fa fa-download" aria-hidden="true"/></a>
                 <a href="#" onClick={this.upload.bind(this)} className="disabled" title="Upload"><i className="fa fa-upload" aria-hidden="true"/></a>
             </div>
         )

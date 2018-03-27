@@ -10,6 +10,7 @@ import therapistEditor from './reducers/therapistEditor';
 import therapistList from './reducers/therapistList';
 import code from './reducers/code';
 import editor from './reducers/editor';
+import editorSideNav from './reducers/editorSideNav';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
@@ -24,5 +25,6 @@ export default combineReducers({
     therapistList,
     code,
     editor,
+    editorSideNav,
     router: routerReducer
 });
