@@ -180,9 +180,9 @@ class FunctionElement extends Component {
                     <Card className="function--card">
                         <CardBody>
                         <div className="d-flex justify-content-end">
-                            <button type="button" className="close" aria-label="Close"
+                            <button type="button" className="close" title="remove" aria-label="Close"
                                     onClick={this.removeFunction.bind(this)}>
-                                <i className="fa fa-times" aria-hidden="true"></i>
+                                <i className="fa fa-times" aria-hidden="true"/>
                             </button>
                         </div>
                             <Row className="function--value">
@@ -199,9 +199,9 @@ class FunctionElement extends Component {
                             </Row>
 
                             <div className="d-flex justify-content-end">
-                                <button type="button" className="close" aria-label="Close"
+                                <button type="button" className="close" title="toggle" aria-label="Close"
                                         onClick={this.collapse}>
-                                    <i className="fa fa-angle-double-down" aria-hidden="true"></i>
+                                    <i className="fa fa-angle-double-down" aria-hidden="true"/>
                                 </button>
                             </div>
                             <div id={`detailed--info__${this.props.func.id}`}>

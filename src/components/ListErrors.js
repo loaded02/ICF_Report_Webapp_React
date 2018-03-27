@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert} from 'reactstrap';
+import {UncontrolledAlert} from 'reactstrap';
 
 class ListErrors extends React.Component {
     render() {
@@ -10,9 +10,9 @@ class ListErrors extends React.Component {
                     {
                         Object.keys(errors).map(key => {
                             return (
-                                <Alert color="danger" key={key}>
+                                <UncontrolledAlert color="danger" key={key}>
                                     {key} {errors[key]}
-                                </Alert>
+                                </UncontrolledAlert>
                             );
                         })
                     }

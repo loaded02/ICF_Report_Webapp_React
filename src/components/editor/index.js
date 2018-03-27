@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import {Button, Row, Col, Form, FormGroup, Label, Input} from 'reactstrap';
+import {Row, Col, Form, FormGroup, Label, Input} from 'reactstrap';
 import {connect} from 'react-redux';
 import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import {DateTimePicker} from 'react-widgets';
 import './Editor.css';
+import SideNav from './SideNav';
 import FunctionList from './FunctionList';
 import agent from '../../agent';
 import ListErrors from '../ListErrors';
 import {
 	EDITOR_PAGE_LOADED,
-	REPORT_SUBMITTED,
 	EDITOR_PAGE_UNLOADED,
 	UPDATE_FIELD_REPORT,
 	GOTO,
@@ -30,8 +30,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onLoad: payload =>
         dispatch({type: EDITOR_PAGE_LOADED, payload}),
-    onSubmit: report =>
-        dispatch({ type: REPORT_SUBMITTED, payload: report }),
     onUnload: () =>
         dispatch({ type: EDITOR_PAGE_UNLOADED }),
 	onUpdateField: (key, value) =>
@@ -62,93 +60,6 @@ class Editor extends Component {
 		this.changeDate = ev => {
 			this.props.onUpdateField('date', ev);
 		};
-		
-		this.submitForm = ev => {
-			ev.preventDefault();
-			
-			const report = {
-				type: this.props.type,
-				patientId: this.props.patientId,
-				therapistId: this.props.therapistId,
-				date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
-				freeText: this.props.freeText
-			};
-			
-			const promise = this.hasReport ?
-				agent.Report.update(report, this.props.reportId) :
-				agent.Report.create(report);
-			this.props.onSubmit(promise);
-		};
-
-		this.createPdf = (ev) => {
-		    ev.preventDefault();
-			
-			const report = {
-				type: this.props.type,
-				patient: this.props.patients.find(p => p.id === this.props.patientId),
-				therapist: this.props.therapists.find(t => t.id === this.props.therapistId),
-				date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
-				freeText: this.props.freeText,
-				functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
-				structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id == s.codeId)}}),
-				activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id == a.codeId)}}),
-				contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
-			};
-			
-			// File Dump
-/*			console.log('Create Pdf.');
-			const a = document.createElement("a");
-			document.body.appendChild(a);
-			a.style = "display: none";
-            const json = JSON.stringify(report),
-				blob = new Blob([json], {type: "application/json"}),
-				url = window.URL.createObjectURL(blob);
-			a.href = url;
-			a.download = "dump.json";
-			a.click();
-			
-			window.URL.revokeObjectURL(url);*/
-			
-			// REST Call
-			agent.Report.getPdf(report).then(res => {
-				let filename = "";
-				const disposition = res.header['content-disposition'];
-				if (disposition && disposition.indexOf('attachment') !== -1) {
-					const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-					const matches = filenameRegex.exec(disposition);
-					if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-				}
-				const blob = new Blob([res.body], {type: res.type});
-				if (typeof window.navigator.msSaveBlob !== 'undefined') {
-					// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-					window.navigator.msSaveBlob(blob, filename);
-				} else {
-					const URL = window.URL || window.webkitURL;
-					const downloadUrl = URL.createObjectURL(blob);
-					
-					if (filename) {
-						// use HTML5 a[download] attribute to specify filename
-						const a = document.createElement("a");
-						// safari doesn't support this yet
-						if (typeof a.download === 'undefined') {
-							//window.location = downloadUrl;
-							window.open(downloadUrl, '_blank');
-						} else {
-							a.href = downloadUrl;
-							a.download = filename;
-							document.body.appendChild(a);
-							a.setAttribute("target","_blank");
-							a.click();
-						}
-					} else {
-						//window.location = downloadUrl;
-						window.open(downloadUrl, '_blank');
-					}
-					
-					setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-				}
-			})
-        };
 
         this.addFunction = (type) => {
             const obj = {
@@ -252,7 +163,7 @@ class Editor extends Component {
     }
     
     render() {
-        let patients = [(<option key={-1} value={null}>Choose...</option>)];
+        let patients = [(<option key={-1} value={""}>Choose...</option>)];
         if (this.props.patients) {
             patients.push(...this.props.patients.map(patient => {
                 return (
@@ -260,7 +171,7 @@ class Editor extends Component {
                 )
             }));
         }
-        let therapists = [(<option key={-1} value={null}>Choose...</option>)];
+        let therapists = [(<option key={-1} value={""}>Choose...</option>)];
         if (this.props.therapists) {
             therapists.push(...this.props.therapists.map(therapist => {
                 return (
@@ -271,8 +182,9 @@ class Editor extends Component {
 
         return (
             <div className="container main">
+                <SideNav/>
                 <h1>{this.hasReport ? 'Update Report' : 'Create A New Report'}</h1>
-                <Form onSubmit={this.submitForm} className="reportForm">
+                <Form className="reportForm">
                     <ListErrors errors={this.props.errors} />
                     <FormGroup row>
                         <Label for="type" sm={2}>Type</Label>
@@ -320,9 +232,9 @@ class Editor extends Component {
                     <section>
                         <Row className="justify-content-between function--heading">
                             <h5>Body Functions</h5>
-                            <button type="button" className="close" aria-label="Add"
+                            <button type="button" className="close" title="add" aria-label="Add"
                                 onClick={() => this.addFunction('FUNCTION')}>
-                                <i className="fa fa-plus" aria-hidden="true"></i>
+                                <i className="fa fa-plus" aria-hidden="true"/>
                             </button>
                         </Row>
                         <FunctionList functions={this.props.functions} kind="FUNCTION"/>
@@ -330,9 +242,9 @@ class Editor extends Component {
                     <section>
                         <Row className="justify-content-between function--heading">
                             <h5>Body Structures</h5>
-                            <button type="button" className="close" aria-label="Add"
+                            <button type="button" className="close" title="add" aria-label="Add"
                                     onClick={() => this.addFunction('STRUCTURE')}>
-                                <i className="fa fa-plus" aria-hidden="true"></i>
+                                <i className="fa fa-plus" aria-hidden="true"/>
                             </button>
                         </Row>
                         <FunctionList functions={this.props.structures} kind="STRUCTURE"/>
@@ -340,9 +252,9 @@ class Editor extends Component {
                     <section>
                         <Row className="justify-content-between function--heading">
                             <h5>Activities and Participation</h5>
-                            <button type="button" className="close" aria-label="Add"
+                            <button type="button" className="close" title="add" aria-label="Add"
                                     onClick={() => this.addFunction('ACTIVITY')}>
-                                <i className="fa fa-plus" aria-hidden="true"></i>
+                                <i className="fa fa-plus" aria-hidden="true"/>
                             </button>
                         </Row>
                         <FunctionList functions={this.props.activities} kind="ACTIVITY"/>
@@ -350,9 +262,9 @@ class Editor extends Component {
                     <section>
                         <Row className="justify-content-between function--heading">
                             <h5>Context Factors</h5>
-                            <button type="button" className="close" aria-label="Add"
+                            <button type="button" className="close" title="add" aria-label="Add"
                                     onClick={() => this.addFunction('CONTEXT')}>
-                                <i className="fa fa-plus" aria-hidden="true"></i>
+                                <i className="fa fa-plus" aria-hidden="true"/>
                             </button>
                         </Row>
                         <FunctionList functions={this.props.contexts} kind="CONTEXT"/>
@@ -366,15 +278,6 @@ class Editor extends Component {
                                    placeholder="Further description..."
                                    value={this.props.freeText}
                                    onChange={this.changeFreeText}/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup check row>
-                        <Col sm={{size:10, offset:2}}>
-                            <Button color="primary" type="submit"
-									disabled={this.props.inProgress}>
-								{this.hasReport ? 'Save' : 'Add'}</Button>{' '}
-                            <Button color="secondary" type="button"
-                                onClick={this.createPdf}>Create PDF</Button>
                         </Col>
                     </FormGroup>
                 </Form>

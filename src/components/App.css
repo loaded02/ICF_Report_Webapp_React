@@ -1,5 +1,6 @@
 .container.main {
   padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 nav.fixed-top {
   height: 5.5em;
@@ -10,7 +11,7 @@ nav.fixed-top {
 }
 
 .tab-content.tab-persons {
-  height: 60vh;
+  height: 63vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -21,4 +22,9 @@ nav.fixed-top {
 
 .App-logo {
   height: 80px;
+}
+
+div.d-flex .btn {
+  height: 0%;
+  margin-top: auto;
 }
