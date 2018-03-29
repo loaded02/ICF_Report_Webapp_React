@@ -31,7 +31,8 @@ export default (state = {}, action) => {
         case DELETE_PATIENT:
             return {
                 ...state,
-                patients: state.patients.filter(pat => pat.id !== action.patientId)
+                patients: state.patients.filter(pat => pat.id !== action.patientId),
+                errors: action.error ? action.payload.errors : null
             };
         case PROFILE_PAGE_UNLOADED:
             return {};

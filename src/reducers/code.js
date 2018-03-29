@@ -56,7 +56,8 @@ export default (state = {}, action) => {
         case DELETE_CODE:
             return {
                 ...state,
-                codes: state.codes.filter(c => c.id !== action.codeId)
+                codes: state.codes.filter(c => c.id !== action.codeId),
+                errors: action.error ? action.payload.errors : null
             };
         case CODE_SELECTED:
             return {

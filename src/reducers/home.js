@@ -17,7 +17,8 @@ export default (state = {}, action) => {
 		case DELETE_REPORT:
 			return {
 				...state,
-				reports: state.reports.filter(r => r.id !== action.reportId)
+				reports: state.reports.filter(r => r.id !== action.reportId),
+                errors: action.error ? action.payload.errors : null
 			};
         case REPORT_PDF_CREATED:
             return {

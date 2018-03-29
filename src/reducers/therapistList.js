@@ -31,7 +31,8 @@ export default (state = {}, action) => {
         case DELETE_THERAPIST:
             return {
                 ...state,
-                therapists: state.therapists.filter(pat => pat.id !== action.therapistId)
+                therapists: state.therapists.filter(pat => pat.id !== action.therapistId),
+                errors: action.error ? action.payload.errors : null
             };
         case PROFILE_PAGE_UNLOADED:
             return {};

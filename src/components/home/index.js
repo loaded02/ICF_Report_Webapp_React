@@ -7,10 +7,12 @@ import {
     HOME_PAGE_LOADED,
     HOME_PAGE_UNLOADED
 } from "../../constants/actionTypes";
+import ListErrors from '../ListErrors';
 
 const mapStateToProps = state => ({
     reports: state.home.reports,
-    currentUser: state.common.currentUser
+    currentUser: state.common.currentUser,
+    errors: state.home.errors
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,6 +37,7 @@ class Home extends Component {
             return (
                 <div className="container main">
                     <h1>Your Reports</h1>
+                    <ListErrors errors={this.props.errors} />
                     <ReportList reports={this.props.reports} error={this.props.error}/>
                 </div>
             );

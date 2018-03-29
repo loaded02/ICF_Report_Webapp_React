@@ -15,12 +15,15 @@ import {
     THERAPIST_EDITOR_PAGE_TOGGLED,
     GOTO
 } from '../../constants/actionTypes';
+import ListErrors from '../ListErrors';
 
 const mapStateToProps = state => ({
     patients: state.patientList.patients,
     therapists: state.therapistList.therapists,
     profile: state.profile.profile,
-    successId: state.profile.successId
+    successId: state.profile.successId,
+    patientErrors: state.patientList.errors,
+    therapistErrors: state.therapistList.errors,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -65,6 +68,8 @@ class Profile extends Component {
         return (
             <div className="container main">
                 <h1>Your Company</h1>
+                <ListErrors errors={this.props.patientErrors} />
+                <ListErrors errors={this.props.therapistErrors} />
                 <Nav className="navbar--settings">
                     <NavItem>
                         <Button color="secondary" outline onClick={this.props.onTogglePatientEditor}>Add Patient</Button>{' '}
