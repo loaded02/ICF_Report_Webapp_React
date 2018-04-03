@@ -6,10 +6,12 @@ import {
     EDITOR_SIDENAV_UNLOADED,
     REPORT_DOWNLOADED,
     REPORT_PDF_CREATED,
-    REPORT_SUBMITTED
+    REPORT_SUBMITTED,
+    REPORT_UPLOADED
 } from "../../constants/actionTypes";
 import agent from "../../agent";
 import Moment from "moment/moment";
+import md5 from 'md5';
 
 const mapStateToProps = state => ({
     ...state.editor,
@@ -26,7 +28,9 @@ const mapDispatchToProps = dispatch => ({
     onCreatePdf: blob =>
         dispatch({type: REPORT_PDF_CREATED, payload: blob}),
     onDownloadReport: report =>
-        dispatch({type: REPORT_DOWNLOADED, payload: report})
+        dispatch({type: REPORT_DOWNLOADED, payload: report}),
+    onUploadReport: report =>
+        dispatch({type: REPORT_UPLOADED, payload: report})
 });
 
 class SideNav extends Component {
@@ -84,13 +88,38 @@ class SideNav extends Component {
                 activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id == a.codeId)}}),
                 contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
             };
+            report.hash = md5(JSON.stringify(report));
 
-            //this.props.onDownloadReport(report);
+            this.props.onDownloadReport(report);
         };
 
         this.upload = (ev) => {
             ev.preventDefault();
-            console.log('upload');
+            const files = ev.target.files;
+            for (let i = 0, f; f = files[i]; i++) {
+
+                //Only process json files.
+                if (!f.type.match('application/json')) {
+                    continue;
+                }
+
+                const reader = new FileReader();
+                // Closure to capture the file information.
+                reader.onload = ((theFile) => {
+                    return (e) => {
+                        const report = JSON.parse(e.target.result);
+                        const hash = report.hash;
+                        delete report.hash;
+                        if (md5(JSON.stringify(report)) !== hash)
+                            alert('Report has been tampered with!');
+                        else
+                            this.props.onUploadReport(report);
+                    };
+                })(f);
+
+                // Read in the json file as text.
+                reader.readAsText(f, "UTF-8");
+            }
         };
     }
 
@@ -144,7 +173,7 @@ class SideNav extends Component {
                 blob = new Blob([json], {type: "application/json"}),
                 url = window.URL.createObjectURL(blob);
             a.href = url;
-            a.download = report.patient.surname + "_" + new Date().getTime() + "_" +  ".json";
+            a.download = `${report.patient.surname}_${new Date().getTime()}.json`;
             a.click();
 
             window.URL.revokeObjectURL(url);
@@ -167,11 +196,12 @@ class SideNav extends Component {
     render() {
         return (
             <div className="sidenav">
-                <a href="#" onClick={this.submitForm.bind(this)} title="Save on Server">
-                    <i className="fa fa-floppy-o" aria-hidden="true"/></a>
-                <a href="#" onClick={this.createPdf.bind(this)} title="Create PDF"><i className="fa fa-file-pdf-o" aria-hidden="true"/></a>
-                <a href="#" onClick={this.dump.bind(this)} className="disabled" title="Download"><i className="fa fa-download" aria-hidden="true"/></a>
-                <a href="#" onClick={this.upload.bind(this)} className="disabled" title="Upload"><i className="fa fa-upload" aria-hidden="true"/></a>
+                <button onClick={this.submitForm.bind(this)} title="Save on Server">
+                    <i className="fa fa-floppy-o" aria-hidden="true"/></button>
+                <button onClick={this.createPdf.bind(this)} title="Create PDF"><i className="fa fa-file-pdf-o" aria-hidden="true"/></button>
+                <button onClick={this.dump.bind(this)} title="Download"><i className="fa fa-download" aria-hidden="true"/></button>
+                <label htmlFor="fileInput" title="Upload" className="custom-file-upload"><i className="fa fa-upload" aria-hidden="true"/></label>
+                <input type="file" id="fileInput" onChange={this.upload.bind(this)}/>
             </div>
         )
     }

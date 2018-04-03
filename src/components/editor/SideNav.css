@@ -9,27 +9,39 @@
     padding: 8px 0;
 }
 
-.sidenav a {
+.sidenav button, .sidenav .custom-file-upload {
     padding: 12px 6px 12px 6px;
     text-decoration: none;
     font-size: 35px;
     color: #007bff;
     display: block;
-    writing-mode: tb-rl;
+    writing-mode: tb-rl !important;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    width: 100%;
 }
 
-.sidenav a.disabled {
+.sidenav button.disabled {
     color: rgba(0, 135, 255, 0.28);
 }
 
-.sidenav a:hover {
+.sidenav button:hover, .sidenav .custom-file-upload:hover {
     color: #0069d9;
+}
+
+.sidenav button:focus {
+    outline: none;
+}
+
+input[type="file"] {
+    display: none;
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
 @media screen and (max-width: 860px) {
     .sidenav {width: 50px;}
-    .sidenav a {
+    .sidenav button, .sidenav .custom-file-upload {
         font-size: 25px;
         padding: 8px 6px 8px 6px;
     }

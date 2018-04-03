@@ -20,7 +20,8 @@ import {
     UPDATE_FIELD_FUNCTION_VALUE,
     UPDATE_FIELD_STRUCTURE_VALUE,
     UPDATE_FIELD_ACTIVITY_VALUE,
-    UPDATE_FIELD_CONTEXT_VALUE
+    UPDATE_FIELD_CONTEXT_VALUE,
+    REPORT_UPLOADED
 } from "../constants/actionTypes";
 
 export default (state = {}, action) => {
@@ -44,6 +45,20 @@ export default (state = {}, action) => {
             };
         case EDITOR_PAGE_UNLOADED:
             return {};
+        case REPORT_UPLOADED:
+            return {
+                ...state,
+                reportId: action.payload ? action.payload.id : '',
+                type: action.payload ? action.payload.type : '',
+                patientId: action.payload ? action.payload.patient.id : '',
+                therapistId: action.payload ? action.payload.therapist.id : '',
+                freeText: action.payload ? action.payload.freeText : '',
+                date: action.payload && Moment(action.payload.date, 'YYYY-MM-DD').isValid()  ? Moment(action.payload.date, 'YYYY-MM-DD').toDate() : null,
+                functions: action.payload.functions ? action.payload.functions : [],
+                structures: action.payload.structures ? action.payload.structures : [],
+                activities: action.payload.activities ? action.payload.activities : [],
+                contexts: action.payload.contexts ? action.payload.contexts : []
+            };
 		case REPORT_SUBMITTED:
 			return {
 				...state,
