@@ -55,9 +55,6 @@ const LoggedInView = props => {
                         {props.currentUser.username}
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem onClick={() => props.onGoTo(`/@${props.currentUser.username}`)}>
-                            My Company
-                        </DropdownItem>
                         <DropdownItem onClick={() => props.onGoTo('/settings')}>
                             Settings
                         </DropdownItem>

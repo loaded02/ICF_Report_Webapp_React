@@ -7,7 +7,6 @@ import {
     REGISTER,
     EDITOR_PAGE_UNLOADED,
     HOME_PAGE_UNLOADED,
-    PROFILE_PAGE_UNLOADED,
     SETTINGS_PAGE_UNLOADED,
     LOGIN_PAGE_UNLOADED,
     REGISTER_PAGE_UNLOADED,
@@ -51,7 +50,6 @@ export default (state = defaultState, action) => {
 			return { ...state, redirectTo: action.payload };
         case EDITOR_PAGE_UNLOADED:
         case HOME_PAGE_UNLOADED:
-        case PROFILE_PAGE_UNLOADED:
         case SETTINGS_PAGE_UNLOADED:
         case LOGIN_PAGE_UNLOADED:
         case REGISTER_PAGE_UNLOADED:

@@ -3,9 +3,9 @@ import {ListGroup} from 'reactstrap';
 import FunctionElement from './FunctionElement';
 
 const FunctionList = props => {
-    console.log('functionlist', props)
+    //console.log('functionlist', props)
     if(props.error) {
-        console.log(props.error)
+        //console.log(props.error)
         return (
             <div>Error {props.error}</div>
         )

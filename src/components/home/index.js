@@ -36,7 +36,7 @@ class Home extends Component {
         if (this.props.currentUser) {
             return (
                 <div className="container main">
-                    <h1>Your Reports</h1>
+                    <h1>Your ICF Core Sets</h1>
                     <ListErrors errors={this.props.errors} />
                     <ReportList reports={this.props.reports} error={this.props.error}/>
                 </div>

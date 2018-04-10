@@ -5,10 +5,10 @@ import {
     REPORT_SUBMITTED,
     ASYNC_START,
     UPDATE_FIELD_REPORT,
-	FUNCTION_ADDED,
-	STRUCTURE_ADDED,
-	ACTIVITY_ADDED,
-	CONTEXT_ADDED,
+    FUNCTION_ADDED,
+    STRUCTURE_ADDED,
+    ACTIVITY_ADDED,
+    CONTEXT_ADDED,
     DELETE_FUNCTION,
     DELETE_STRUCTURE,
     DELETE_ACTIVITY,
@@ -21,7 +21,7 @@ import {
     UPDATE_FIELD_STRUCTURE_VALUE,
     UPDATE_FIELD_ACTIVITY_VALUE,
     UPDATE_FIELD_CONTEXT_VALUE,
-    REPORT_UPLOADED
+    REPORT_UPLOADED, UPDATE_FIELD_REPORT_PATIENT, UPDATE_FIELD_REPORT_THERAPIST
 } from "../constants/actionTypes";
 
 export default (state = {}, action) => {
@@ -29,19 +29,16 @@ export default (state = {}, action) => {
         case EDITOR_PAGE_LOADED:
             return {
                 ...state,
-                patients: action.payload[0],
-                therapists: action.payload[1],
-                codes: action.payload[2],
-				reportId: action.payload[3] ? action.payload[3].report.id : '',
-                type: action.payload[3] ? action.payload[3].report.type : '',
-				patientId: action.payload[3] ? action.payload[3].report.patient.id : '',
-				therapistId: action.payload[3] ? action.payload[3].report.therapist.id : '',
-				freeText: action.payload[3] ? action.payload[3].report.freeText : '',
-				date: action.payload[3] && Moment(action.payload[3].report.date, 'YYYY-MM-DD').isValid()  ? Moment(action.payload[3].report.date, 'YYYY-MM-DD').toDate() : null,
-				functions: action.payload[4] ? action.payload[4].map(f => {return {...f, codeId: f.code.id}}) : [],
-				structures: action.payload[5] ? action.payload[5].map(s => {return {...s, codeId: s.code.id}}) : [],
-				activities: action.payload[6] ? action.payload[6].map(a => {return {...a, codeId: a.code.id}}) : [],
-				contexts: action.payload[7] ? action.payload[7].map(c => {return {...c, codeId: c.code.id}}) : []
+                codes: action.payload[0],
+				reportId: action.payload[1] ? action.payload[1].report.id : '',
+                patient: {name: '', surname: '', diagnosis: '', dob: null},
+                therapist: {name: "", surname: '', company: ''},
+                type: action.payload[1] ? action.payload[1].report.type : '',
+				date: action.payload[1] && Moment(action.payload[1].report.date, 'YYYY-MM-DD').isValid()  ? Moment(action.payload[1].report.date, 'YYYY-MM-DD').toDate() : null,
+				functions: action.payload[2] ? action.payload[2].map(f => {return {...f, codeId: f.code.id, value: {}}}) : [],
+				structures: action.payload[3] ? action.payload[3].map(s => {return {...s, codeId: s.code.id, value: {}}}) : [],
+				activities: action.payload[4] ? action.payload[4].map(a => {return {...a, codeId: a.code.id, value: {}}}) : [],
+				contexts: action.payload[5] ? action.payload[5].map(c => {return {...c, codeId: c.code.id, value: {}}}) : []
             };
         case EDITOR_PAGE_UNLOADED:
             return {};
@@ -50,8 +47,13 @@ export default (state = {}, action) => {
                 ...state,
                 reportId: action.payload ? action.payload.id : '',
                 type: action.payload ? action.payload.type : '',
-                patientId: action.payload ? action.payload.patient.id : '',
-                therapistId: action.payload ? action.payload.therapist.id : '',
+                patient: action.payload ? {
+                    name: action.payload.patient.name,
+                    surname: action.payload.patient.surname,
+                    diagnosis: action.payload.patient.diagnosis,
+                    dob: Moment(action.payload.patient.dob, 'YYYY-MM-DD').isValid()  ? Moment(action.payload.patient.dob, 'YYYY-MM-DD').toDate() : null
+                } : '',
+                therapist: action.payload ? action.payload.therapist : '',
                 freeText: action.payload ? action.payload.freeText : '',
                 date: action.payload && Moment(action.payload.date, 'YYYY-MM-DD').isValid()  ? Moment(action.payload.date, 'YYYY-MM-DD').toDate() : null,
                 functions: action.payload.functions ? action.payload.functions : [],
@@ -79,6 +81,12 @@ export default (state = {}, action) => {
 			    ...state,
                 [action.key]: action.value
 			};
+        case UPDATE_FIELD_REPORT_PATIENT:
+            state.patient[action.key] = action.value;
+            return {...state};
+        case UPDATE_FIELD_REPORT_THERAPIST:
+            state.therapist[action.key] = action.value;
+            return {...state};
 		case FUNCTION_ADDED:
 			return {
 				...state,

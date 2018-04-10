@@ -12,6 +12,7 @@ import {
 import agent from "../../agent";
 import Moment from "moment/moment";
 import md5 from 'md5';
+import {API_VERSION} from "../../constants/config";
 
 const mapStateToProps = state => ({
     ...state.editor,
@@ -61,8 +62,13 @@ class SideNav extends Component {
 
             const report = {
                 type: this.props.type,
-                patient: this.props.patients.find(p => p.id == this.props.patientId),
-                therapist: this.props.therapists.find(t => t.id == this.props.therapistId),
+                patient: {
+                    dob: this.props.patient.dob && Moment(this.props.patient.dob).isValid() ? Moment(this.props.patient.dob).format('YYYY-MM-DD') : null,
+                    name: this.props.patient.name,
+                    surname: this.props.patient.surname,
+                    diagnosis: this.props.patient.diagnosis
+                },
+                therapist: this.props.therapist,
                 date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
                 freeText: this.props.freeText,
                 functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
@@ -79,8 +85,13 @@ class SideNav extends Component {
 
             const report = {
                 type: this.props.type,
-                patient: this.props.patients.find(p => p.id == this.props.patientId),
-                therapist: this.props.therapists.find(t => t.id == this.props.therapistId),
+                patient: {
+                    dob: this.props.patient.dob && Moment(this.props.patient.dob).isValid() ? Moment(this.props.patient.dob).format('YYYY-MM-DD') : null,
+                    name: this.props.patient.name,
+                    surname: this.props.patient.surname,
+                    diagnosis: this.props.patient.diagnosis
+                },
+                therapist: this.props.therapist,
                 date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
                 freeText: this.props.freeText,
                 functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
@@ -89,6 +100,7 @@ class SideNav extends Component {
                 contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
             };
             report.hash = md5(JSON.stringify(report));
+            report.version = API_VERSION;
 
             this.props.onDownloadReport(report);
         };
@@ -110,8 +122,12 @@ class SideNav extends Component {
                         const report = JSON.parse(e.target.result);
                         const hash = report.hash;
                         delete report.hash;
+                        const version = report.version;
+                        delete report.version;
                         if (md5(JSON.stringify(report)) !== hash)
                             alert('Report has been tampered with!');
+                        else if (API_VERSION !== version)
+                            alert('Report Format is from another version!');
                         else
                             this.props.onUploadReport(report);
                     };
@@ -196,11 +212,11 @@ class SideNav extends Component {
     render() {
         return (
             <div className="sidenav">
-                <button onClick={this.submitForm.bind(this)} title="Save on Server">
+                <button onClick={this.submitForm.bind(this)} title="Save ICF Core Set on Server">
                     <i className="fa fa-floppy-o" aria-hidden="true"/></button>
                 <button onClick={this.createPdf.bind(this)} title="Create PDF"><i className="fa fa-file-pdf-o" aria-hidden="true"/></button>
-                <button onClick={this.dump.bind(this)} title="Download"><i className="fa fa-download" aria-hidden="true"/></button>
-                <label htmlFor="fileInput" title="Upload" className="custom-file-upload"><i className="fa fa-upload" aria-hidden="true"/></label>
+                <button onClick={this.dump.bind(this)} title="Download Report"><i className="fa fa-download" aria-hidden="true"/></button>
+                <label htmlFor="fileInput" title="Upload Report" className="custom-file-upload"><i className="fa fa-upload" aria-hidden="true"/></label>
                 <input type="file" id="fileInput" onChange={this.upload.bind(this)}/>
             </div>
         )

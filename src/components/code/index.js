@@ -4,9 +4,11 @@ import agent from '../../agent';
 import CodeList from './CodeList';
 import ListErrors from '../ListErrors';
 import CodeForm from './CodeForm';
+import {Nav, NavItem, Button, Alert} from 'reactstrap';
 import {
     CODE_PAGE_LOADED,
-    CODE_PAGE_UNLOADED
+    CODE_PAGE_UNLOADED,
+    CODE_EDITOR_PAGE_TOGGLED
 } from "../../constants/actionTypes";
 
 const mapStateToProps = state => ({
@@ -15,7 +17,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onLoad: payload => dispatch({type: CODE_PAGE_LOADED, payload}),
-    onUnload: () => dispatch({ type: CODE_PAGE_UNLOADED })
+    onUnload: () => dispatch({ type: CODE_PAGE_UNLOADED }),
+    onToggleCodeEditor: () => dispatch({type: CODE_EDITOR_PAGE_TOGGLED})
 });
 
 class Code extends Component {
@@ -33,12 +36,17 @@ class Code extends Component {
     render() {
         return (
             <div className="container main">
-                <h1>ICF Code Form</h1>
                 <ListErrors errors={this.props.errors} />
-                <CodeForm/>
+                <Nav className="navbar--settings">
+                    <NavItem>
+                        <Button color="secondary" outline onClick={this.props.onToggleCodeEditor}>Add Code</Button>
+                    </NavItem>
+                </Nav>
                 <hr/>
-                <h1>Existing ICF Codes</h1>
+                {this.props.successId ? <Alert color="success">Action successfull. Id:{this.props.successId}</Alert> : null}
+                <h1>Community ICF Codes</h1>
                 <CodeList codes={this.props.codes} error={this.props.error} />
+                <CodeForm/>
             </div>
         )
     }

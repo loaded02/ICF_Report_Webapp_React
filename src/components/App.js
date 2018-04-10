@@ -7,7 +7,6 @@ import Header from './Header';
 import NoMatch from './NoMatch';
 import Home from './home';
 import Login from '../components/Login';
-import Profile from './profile/index';
 import Register from '../components/Register';
 import Editor from './editor/index';
 import Settings from '../components/Settings';
@@ -63,7 +62,6 @@ class App extends Component {
                         <Route path="/editor" component={Editor} />
                         <Route path="/code" component={Code} />
                         <Route path="/settings" component={Settings} />
-                        <Route path="/@:username" component={Profile} />
                         <Route component={NoMatch} />
                     </Switch>
                 </div>

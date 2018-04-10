@@ -32,10 +32,10 @@ const ReportList = props => {
                         <div className="list-group-item list-group-item-action flex-column align-items-start"
                              key={report.id}>
                             <div className="d-flex w-100 justify-content-between">
-                                <h5 className="mb-1">{report.type} - {report.patient.surname}</h5>
+                                <h5 className="mb-1">{report.type}</h5>
                             </div>
                             <div className="d-flex w-100 justify-content-between">
-                                <p className="mb-1">{report.therapist.surname} - {Moment(report.date).isValid() ? Moment(report.date).format('DD.MM.YYYY') : ''}</p>
+                                <p className="mb-1">{Moment(report.date).isValid() ? Moment(report.date).format('DD.MM.YYYY') : ''}</p>
                                 <div className="mb-1">
                                     <ReportButtonGroup report={report}/>
                                 </div>

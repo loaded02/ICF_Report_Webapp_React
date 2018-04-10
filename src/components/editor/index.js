@@ -9,6 +9,8 @@ import SideNav from './SideNav';
 import FunctionList from './FunctionList';
 import agent from '../../agent';
 import ListErrors from '../ListErrors';
+import PatientElement from './PatientElement';
+import TherapistElement from './TherapistElement';
 import {
 	EDITOR_PAGE_LOADED,
 	EDITOR_PAGE_UNLOADED,
@@ -55,8 +57,6 @@ class Editor extends Component {
 		const updateFieldEvent =
 			key => ev => this.props.onUpdateField(key, ev.target.value);
 		this.changeType = updateFieldEvent('type');
-		this.changePatientId = updateFieldEvent('patientId');
-		this.changeTherapistId = updateFieldEvent('therapistId');
 		this.changeFreeText = updateFieldEvent('freeText');
 		this.changeDate = ev => {
 			this.props.onUpdateField('date', ev);
@@ -118,8 +118,6 @@ class Editor extends Component {
         }
 		if (this.props.match.params.id !== nextProps.match.params.id) {
 			const promises = [
-				agent.Patient.all(),
-				agent.Therapist.all(),
 				agent.Code.all()
 			];
 			if (nextProps.match.params.id) {
@@ -141,8 +139,6 @@ class Editor extends Component {
 
     componentWillMount() {
 		const promises = [
-			agent.Patient.all(),
-			agent.Therapist.all(),
 			agent.Code.all()
 		];
 		if (this.props.match.params.id) {
@@ -164,23 +160,6 @@ class Editor extends Component {
     }
     
     render() {
-        let patients = [(<option key={-1} value={""}>Choose...</option>)];
-        if (this.props.patients) {
-            patients.push(...this.props.patients.map(patient => {
-                return (
-                    <option key={patient.id} value={patient.id}>{patient.surname}</option>
-                )
-            }));
-        }
-        let therapists = [(<option key={-1} value={""}>Choose...</option>)];
-        if (this.props.therapists) {
-            therapists.push(...this.props.therapists.map(therapist => {
-                return (
-                    <option key={therapist.id} value={therapist.id}>{therapist.surname}</option>
-                )
-            }));
-        }
-
         return (
             <div className="container main">
                 <SideNav/>
@@ -197,26 +176,6 @@ class Editor extends Component {
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="patient" sm={2}>Patient</Label>
-                        <Col sm={10}>
-                            <Input type="select" name="patientId" id="patient"
-                                   value={this.props.patientId}
-                                   onChange={this.changePatientId}>
-                                {patients}
-                            </Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="therapist" sm={2}>Therapist</Label>
-                        <Col sm={10}>
-                            <Input type="select" name="therapistId" id="therapist"
-                                   value={this.props.therapistId}
-                                   onChange={this.changeTherapistId}>
-                                {therapists}
-                            </Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
                         <Label for="date" sm={2}>Date</Label>
                         <Col sm={10}>
                             <DateTimePicker
@@ -229,6 +188,8 @@ class Editor extends Component {
                             />
                         </Col>
                     </FormGroup>
+                    <PatientElement row/>
+                    <TherapistElement row/>
                     <hr/>
 
                     <section>

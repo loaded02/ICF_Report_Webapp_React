@@ -68,3 +68,7 @@ div[id*="detailed--info__"] {
     /* IE 10 */ background: -ms-linear-gradient(top, #cdeef5, #ffffff);
     /* Opera 11.10+ */ background: -o-linear-gradient(top, #cdeef5, #ffffff);
 }
+
+.card {
+    margin-bottom: 1rem;
+}

@@ -2,17 +2,17 @@ import React from 'react';
 import {ListGroup} from 'reactstrap';
 import CodeDeleteButton from './CodeDeleteButton';
 import { connect } from 'react-redux';
-import {CODE_SELECTED} from '../../constants/actionTypes';
+import {CODE_EDITOR_PAGE_TOGGLED} from '../../constants/actionTypes';
 
 const mapDispatchToProps = dispatch => ({
-    onClick: payload =>
-        dispatch({ type: CODE_SELECTED, payload })
+    onClick: codeId =>
+        dispatch({ type: CODE_EDITOR_PAGE_TOGGLED, codeId })
 });
 
 const CodeList = props => {
-    console.log('codelist', props)
+    //console.log('codelist', props)
     if(props.error) {
-        console.log(props.error)
+        //console.log(props.error)
         return (
             <div>Error {props.error}</div>
         )
@@ -31,21 +31,13 @@ const CodeList = props => {
         );
     }
 
-    const select = (ev, code) => {
-        Array.from(document.querySelectorAll('div[data-type="code-element"]'))
-            .forEach(item => item.classList.remove('active'));
-        document.getElementById(`code-element_${code.id}`).classList.toggle('active');
-        props.onClick(code);
-    };
-
     return (
         <ListGroup>
             {
                 props.codes.map(code => {
                     return (
                         <div className="list-group-item list-group-item-action flex-column align-items-start"
-                             data-type="code-element" id={`code-element_${code.id}`} key={code.id}
-                             onClick={(ev) => select(ev, code)}>
+                             key={code.id} onClick={() => props.onClick(code.id)}>
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{code.code}</h5>
                             </div>

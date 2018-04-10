@@ -89,11 +89,10 @@ class ReportButtonGroup extends Component {
                     Actions
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem onClick={(ev) => this.downloadPdf(ev, this.props.report.id)}>
-                        Create PDF</DropdownItem>
                     <DropdownItem onClick={() => this.props.onGoTo(`/editor/${this.props.report.id}`)}>
-                        Edit</DropdownItem>
-                    <DropdownItem disabled={true}>Duplicate</DropdownItem>
+                        Create Report</DropdownItem>
+                    <DropdownItem onClick={(ev) => this.downloadPdf(ev, this.props.report.id)}>
+                        Create Plain PDF</DropdownItem>
                     <DropdownItem divider />
                     <ReportDeleteButton reportId={this.props.report.id}/>
                 </DropdownMenu>
