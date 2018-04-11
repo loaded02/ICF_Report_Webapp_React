@@ -15,6 +15,7 @@ import {
     UPDATE_FIELD_ACTIVITY,
     UPDATE_FIELD_CONTEXT
 } from "../../constants/actionTypes";
+import agent from "../../agent";
 
 const mapStateToProps = state => ({
     ...state,
@@ -22,14 +23,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onDeleteFunction: (functionId) =>
-        dispatch({ type: DELETE_FUNCTION, functionId }),
-    onDeleteStructure: (structureId) =>
-        dispatch({ type: DELETE_STRUCTURE, structureId }),
-    onDeleteActivity: (activityId) =>
-        dispatch({ type: DELETE_ACTIVITY, activityId }),
-    onDeleteContext: (contextId) =>
-        dispatch({ type: DELETE_CONTEXT, contextId }),
+    onDeleteFunction: (payload, functionId) =>
+        dispatch({ type: DELETE_FUNCTION, payload, functionId }),
+    onDeleteStructure: (payload, structureId) =>
+        dispatch({ type: DELETE_STRUCTURE, payload, structureId }),
+    onDeleteActivity: (payload, activityId) =>
+        dispatch({ type: DELETE_ACTIVITY, payload, activityId }),
+    onDeleteContext: (payload, contextId) =>
+        dispatch({ type: DELETE_CONTEXT, payload, contextId }),
     onUpdateFieldFunction: (key, value, functionId) =>
         dispatch({ type: UPDATE_FIELD_FUNCTION, key, value, functionId }),
     onUpdateFieldStructure: (key, value, structureId) =>
@@ -68,18 +69,19 @@ class FunctionElement extends Component {
         super();
 
         this.removeFunction = () => {
+            const payload = agent.Report.remove(this.props.func.id);
             switch (this.props.kind) {
                 case 'FUNCTION':
-                    this.props.onDeleteFunction(this.props.func.id);
+                    this.props.onDeleteFunction(payload, this.props.func.id);
                     break;
                 case 'STRUCTURE':
-                    this.props.onDeleteStructure(this.props.func.id);
+                    this.props.onDeleteStructure(payload, this.props.func.id);
                     break;
                 case 'ACTIVITY':
-                    this.props.onDeleteActivity(this.props.func.id);
+                    this.props.onDeleteActivity(payload, this.props.func.id);
                     break;
                 case 'CONTEXT':
-                    this.props.onDeleteContext(this.props.func.id);
+                    this.props.onDeleteContext(payload, this.props.func.id);
                     break;
                 default:
             }

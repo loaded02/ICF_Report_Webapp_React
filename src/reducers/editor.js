@@ -110,22 +110,26 @@ export default (state = {}, action) => {
         case DELETE_FUNCTION:
             return {
                 ...state,
-                functions: state.functions.filter(f => f.id !== action.functionId)
+                functions: state.functions.filter(f => f.id !== action.functionId),
+                errors: action.error ? action.payload.errors : null
             };
         case DELETE_STRUCTURE:
             return {
                 ...state,
-                structures: state.structures.filter(s => s.id !== action.structureId)
+                structures: state.structures.filter(s => s.id !== action.structureId),
+                errors: action.error ? action.payload.errors : null
             };
         case DELETE_ACTIVITY:
             return {
                 ...state,
-                activities: state.activities.filter(a => a.id !== action.activityId)
+                activities: state.activities.filter(a => a.id !== action.activityId),
+                errors: action.error ? action.payload.errors : null
             };
         case DELETE_CONTEXT:
             return {
                 ...state,
-                contexts: state.contexts.filter(c => c.id !== action.contextId)
+                contexts: state.contexts.filter(c => c.id !== action.contextId),
+                errors: action.error ? action.payload.errors : null
             };
         case UPDATE_FIELD_FUNCTION:
             return {
