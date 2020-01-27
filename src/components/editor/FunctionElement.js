@@ -70,7 +70,7 @@ class FunctionElement extends Component {
 
         this.removeFunction = () => {
             let payload = null;
-            if (!(this.props.func.id >= 0)) {
+            if (this.props.func.id >= 0) {
                 payload = agent.Function.remove(this.props.reportId, this.props.func.id);
             }
             switch (this.props.kind) {
