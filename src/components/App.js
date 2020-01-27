@@ -13,7 +13,7 @@ import Settings from '../components/Settings';
 import Code from '../components/code/index';
 import agent from '../agent';
 import { store } from '../store';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 const mapStateToProps = state => ({
     appLoaded: state.common.appLoaded,

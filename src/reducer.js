@@ -7,9 +7,9 @@ import code from './reducers/code';
 import codeForm from './reducers/codeForm';
 import editor from './reducers/editor';
 import editorSideNav from './reducers/editorSideNav';
-import { routerReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router'
 
-export default combineReducers({
+const createRootReducer = (history) => combineReducers({
     auth,
     common,
     home,
@@ -18,5 +18,7 @@ export default combineReducers({
     codeForm,
     editor,
     editorSideNav,
-    router: routerReducer
+    router: connectRouter(history)
 });
+
+export default createRootReducer
