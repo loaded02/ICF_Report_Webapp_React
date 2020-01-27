@@ -69,7 +69,10 @@ class FunctionElement extends Component {
         super();
 
         this.removeFunction = () => {
-            const payload = agent.Function.remove(this.props.reportId, this.props.func.id);
+            let payload = null;
+            if (typeof this.props.func.id === 'string' && this.props.func.id.includes('new_')) {
+                payload = agent.Function.remove(this.props.reportId, this.props.func.id);
+            }
             switch (this.props.kind) {
                 case 'FUNCTION':
                     this.props.onDeleteFunction(payload, this.props.func.id);
