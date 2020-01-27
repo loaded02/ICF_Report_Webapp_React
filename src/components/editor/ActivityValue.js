@@ -20,7 +20,7 @@ class ActivityValue extends Component {
         super();
 
         const handleValueChange = key => ev =>
-            this.props.onUpdateFieldActivityValue(key, ev.target.value, this.props.funcId);
+            this.props.onUpdateFieldActivityValue(key, Number(ev.target.value), this.props.funcId);
         this.changePerformance = handleValueChange('performance');
         this.changeCapacity = handleValueChange('capacity');
     }
@@ -36,7 +36,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={0} checked={this.props.value.performance == 0}
+                                       value={0} checked={this.props.value.performance === 0}
                                        onChange={this.changePerformance}/>{' '}
                                 0
                             </Label>
@@ -46,7 +46,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={1} checked={this.props.value.performance == 1}
+                                       value={1} checked={this.props.value.performance === 1}
                                        onChange={this.changePerformance}/>{' '}
                                 1
                             </Label>
@@ -56,7 +56,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={2} checked={this.props.value.performance == 2}
+                                       value={2} checked={this.props.value.performance === 2}
                                        onChange={this.changePerformance}/>{' '}
                                 2
                             </Label>
@@ -66,7 +66,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={3} checked={this.props.value.performance == 3}
+                                       value={3} checked={this.props.value.performance === 3}
                                        onChange={this.changePerformance}/>{' '}
                                 3
                             </Label>
@@ -76,7 +76,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={4} checked={this.props.value.performance == 4}
+                                       value={4} checked={this.props.value.performance === 4}
                                        onChange={this.changePerformance}/>{' '}
                                 4
                             </Label>
@@ -86,7 +86,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={8} checked={this.props.value.performance == 8}
+                                       value={8} checked={this.props.value.performance === 8}
                                        onChange={this.changePerformance}/>{' '}
                                 8
                             </Label>
@@ -96,7 +96,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`performance_${this.props.funcId}`}
-                                       value={9} checked={this.props.value.performance == 9}
+                                       value={9} checked={this.props.value.performance === 9}
                                        onChange={this.changePerformance}/>{' '}
                                 9
                             </Label>
@@ -111,7 +111,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={0} checked={this.props.value.capacity == 0}
+                                       value={0} checked={this.props.value.capacity === 0}
                                        onChange={this.changeCapacity}/>{' '}
                                 0
                             </Label>
@@ -121,7 +121,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={1} checked={this.props.value.capacity == 1}
+                                       value={1} checked={this.props.value.capacity === 1}
                                        onChange={this.changeCapacity}/>{' '}
                                 1
                             </Label>
@@ -131,7 +131,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={2} checked={this.props.value.capacity == 2}
+                                       value={2} checked={this.props.value.capacity === 2}
                                        onChange={this.changeCapacity}/>{' '}
                                 2
                             </Label>
@@ -141,7 +141,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={3} checked={this.props.value.capacity == 3}
+                                       value={3} checked={this.props.value.capacity === 3}
                                        onChange={this.changeCapacity}/>{' '}
                                 3
                             </Label>
@@ -151,7 +151,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={4} checked={this.props.value.capacity == 4}
+                                       value={4} checked={this.props.value.capacity === 4}
                                        onChange={this.changeCapacity}/>{' '}
                                 4
                             </Label>
@@ -161,7 +161,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={8} checked={this.props.value.capacity == 8}
+                                       value={8} checked={this.props.value.capacity === 8}
                                        onChange={this.changeCapacity}/>{' '}
                                 8
                             </Label>
@@ -171,7 +171,7 @@ class ActivityValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`capacity_${this.props.funcId}`}
-                                       value={9} checked={this.props.value.capacity == 9}
+                                       value={9} checked={this.props.value.capacity === 9}
                                        onChange={this.changeCapacity}/>{' '}
                                 9
                             </Label>
