@@ -16,6 +16,7 @@ import {
     UPDATE_FIELD_CONTEXT
 } from "../../constants/actionTypes";
 import agent from "../../agent";
+import newId from '../../utils/newId';
 
 const mapStateToProps = state => ({
     ...state,
@@ -170,6 +171,11 @@ class FunctionElement extends Component {
         }
     };
 
+    componentDidMount() {
+        this.codeId = newId('code');
+        this.descriptionId = newId('description');
+    }
+
     render() {
         const codes = [(<option key={-1} value={null}>Choose...</option>)];
         if (this.props.codes) {
@@ -193,7 +199,7 @@ class FunctionElement extends Component {
                             <Row className="function--value">
                                 <FormGroup className="col-md-2">
                                     <Label for="code" hidden>Code</Label>
-                                    <Input type="select" name="codeId" id="code"
+                                    <Input type="select" name="codeId" id={this.codeId}
                                            value={this.props.func.codeId}
                                            onChange={this.changeCodeId}>
                                         {codes}
@@ -287,7 +293,7 @@ class FunctionElement extends Component {
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <Input type="text" name="description" id="description"
+                                            <Input type="text" name="description" id={this.descriptionId}
                                                 placeholder="Description"
                                                 value={this.props.func.description}
                                                 onChange={this.changeDescription}/>

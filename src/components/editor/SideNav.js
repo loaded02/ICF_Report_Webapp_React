@@ -197,7 +197,7 @@ class SideNav extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.onLoad({});
     }
 

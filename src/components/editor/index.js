@@ -137,7 +137,7 @@ class Editor extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
 		const promises = [
 			agent.Code.all()
 		];
