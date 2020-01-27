@@ -115,7 +115,7 @@ class FunctionElement extends Component {
             description: 'Empty Description'
         };
         if (this.props.codes && this.props.codes.length > 0) {
-            const found = this.props.codes.find(c => c.id == codeId);
+            const found = this.props.codes.find(c => c.id === codeId);
             return found !== undefined ? found : empty;
         }else {
             return empty;
