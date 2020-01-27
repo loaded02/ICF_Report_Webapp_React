@@ -1,37 +1,55 @@
 {
   "name": "icf-report-react-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://loaded02.github.io/ICF_Report_Webapp_React",
   "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "bootstrap": "4.0.0-beta",
-    "history": "^4.3.0",
-    "marked": "^0.3.6",
+    "history": "4.10.1",
+    "marked": "0.8.0",
     "md5": "^2.2.1",
-    "moment": "^2.19.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-redux": "^4.4.8",
-    "react-router": "^4.1.2",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^5.0.0-alpha.6",
-    "react-widgets": "^4.1.1",
-    "react-widgets-moment": "^4.0.4",
-    "reactstrap": "^5.0.0-alpha.3",
-    "redux": "^3.6.0",
-    "redux-devtools-extension": "^2.13.2",
+    "moment": "^2.24.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0",
+    "react-redux": "^7.1.3",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "connected-react-router": "^6.6.1",
+    "react-widgets": "^4.4.11",
+    "react-widgets-moment": "^4.0.27",
+    "reactstrap": "^8.4.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
-    "superagent": "^3.6.3",
+    "superagent": "^5.2.1",
     "superagent-promise": "^1.1.0"
   },
   "devDependencies": {
-    "gh-pages": "^1.1.0",
-    "react-scripts": "1.0.7"
+    "gh-pages": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "react-scripts build && gh-pages -d build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

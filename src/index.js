@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-widgets/dist/css/react-widgets.css';
 
 import {Route, Switch} from 'react-router-dom';
-import {ConnectedRouter} from 'react-router-redux';
+import {ConnectedRouter} from 'connected-react-router';
 
 import App from './components/App';
 
