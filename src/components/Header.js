@@ -5,13 +5,13 @@ import {Collapse, Navbar, NavbarToggler,UncontrolledDropdown,
     DropdownMenu,
     DropdownItem} from 'reactstrap';
 import logo from '../images/logo.svg';
-import {GOTO, LOGOUT} from "../constants/actionTypes";
+import {LOGOUT} from "../constants/actionTypes";
 import { connect } from 'react-redux';
+import { store } from '../store';
+import { push } from 'connected-react-router';
 
 const mapDispatchToProps = dispatch => ({
-    onClickLogout: () => dispatch({ type: LOGOUT }),
-    onGoTo: (payload) =>
-        dispatch({ type: GOTO, payload })
+    onClickLogout: () => dispatch({ type: LOGOUT })
 });
 
 const LoggedOutView = props => {
@@ -55,7 +55,7 @@ const LoggedInView = props => {
                         {props.currentUser.username}
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem onClick={() => props.onGoTo('/settings')}>
+                        <DropdownItem onClick={props.goToSettings}>
                             Settings
                         </DropdownItem>
                         <DropdownItem divider />
@@ -88,6 +88,9 @@ class Header extends Component {
             isOpen: !this.state.isOpen
         });
     }
+    goToSettings() {
+        store.dispatch(push('/settings'));
+    }
     render() {
         return (
             <div>
@@ -100,7 +103,7 @@ class Header extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <LoggedOutView currentUser={this.props.currentUser} />
                         <LoggedInView currentUser={this.props.currentUser}
-                            onGoTo={this.props.onGoTo}
+                            goToSettings={this.goToSettings}
                             onClickLogout={this.props.onClickLogout}/>
                     </Collapse>
                 </Navbar>

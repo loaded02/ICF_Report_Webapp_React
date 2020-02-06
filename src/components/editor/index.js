@@ -15,7 +15,6 @@ import {
     EDITOR_PAGE_LOADED,
     EDITOR_PAGE_UNLOADED,
     UPDATE_FIELD_REPORT,
-    GOTO,
     FUNCTION_ADDED,
     STRUCTURE_ADDED,
     ACTIVITY_ADDED,
@@ -38,8 +37,6 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: EDITOR_PAGE_UNLOADED }),
 	onUpdateField: (key, value) =>
 		dispatch({ type: UPDATE_FIELD_REPORT, key, value }),
-	onGoto: payload =>
-        dispatch({type: GOTO, payload}),
     onSubmitFunction: payload =>
         dispatch({type: FUNCTION_SUBMITTED, payload}),
     onAddFunction: func =>

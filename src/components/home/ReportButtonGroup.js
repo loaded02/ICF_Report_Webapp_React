@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import ReportDeleteButton from './ReportDeleteButton';
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
-import {GOTO, REPORT_PDF_CREATED} from "../../constants/actionTypes";
+import {REPORT_PDF_CREATED} from "../../constants/actionTypes";
 import { connect } from 'react-redux';
 import agent from '../../agent';
+import { store } from '../../store';
+import { push } from 'connected-react-router';
 
 const mapStateToProps = state => ({
     ...state.home
 });
 
 const mapDispatchToProps = dispatch => ({
-    onGoTo: (payload) =>
-        dispatch({ type: GOTO, payload }),
     onCreatePdf: blob =>
         dispatch({type: REPORT_PDF_CREATED, payload: blob})
 });
@@ -30,7 +30,6 @@ class ReportButtonGroup extends Component {
             ev.nativeEvent.stopImmediatePropagation();
             this.props.onCreatePdf(agent.Report.getPdfFromDB(reportId));
         };
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -56,7 +55,6 @@ class ReportButtonGroup extends Component {
                     const a = document.createElement("a");
                     // safari doesn't support this yet
                     if (typeof a.download === 'undefined') {
-                        //window.location = downloadUrl;
                         window.open(downloadUrl, '_blank');
                     } else {
                         a.href = downloadUrl;
@@ -66,7 +64,6 @@ class ReportButtonGroup extends Component {
                         a.click();
                     }
                 } else {
-                    //window.location = downloadUrl;
                     window.open(downloadUrl, '_blank');
                 }
 
@@ -82,6 +79,10 @@ class ReportButtonGroup extends Component {
         });
     }
 
+    openEditor() {
+        store.dispatch(push(`/editor/${this.props.report.id}`));
+    }
+
     render() {
         return(
             <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -89,7 +90,7 @@ class ReportButtonGroup extends Component {
                     Actions
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem onClick={() => this.props.onGoTo(`/editor/${this.props.report.id}`)}>
+                    <DropdownItem onClick={this.openEditor.bind(this)}>
                         Create Report</DropdownItem>
                     <DropdownItem onClick={(ev) => this.downloadPdf(ev, this.props.report.id)}>
                         Create Plain PDF</DropdownItem>
