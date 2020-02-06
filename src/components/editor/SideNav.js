@@ -71,10 +71,10 @@ class SideNav extends Component {
                 therapist: this.props.therapist,
                 date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
                 freeText: this.props.freeText,
-                functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
-                structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id == s.codeId)}}),
-                activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id == a.codeId)}}),
-                contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
+                functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id === f.codeId)}}),
+                structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id === s.codeId)}}),
+                activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id === a.codeId)}}),
+                contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id === c.codeId)}})
             };
 
             this.props.onCreatePdf(agent.Report.getPdf(report));
@@ -94,10 +94,10 @@ class SideNav extends Component {
                 therapist: this.props.therapist,
                 date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
                 freeText: this.props.freeText,
-                functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
-                structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id == s.codeId)}}),
-                activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id == a.codeId)}}),
-                contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
+                functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id === f.codeId)}}),
+                structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id === s.codeId)}}),
+                activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id === a.codeId)}}),
+                contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id === c.codeId)}})
             };
             report.hash = md5(JSON.stringify(report));
             report.version = API_VERSION;
@@ -197,7 +197,7 @@ class SideNav extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.onLoad({});
     }
 

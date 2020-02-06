@@ -20,7 +20,7 @@ class ContextValue extends Component {
         super();
 
         const handleValueChange = key => ev =>
-            this.props.onUpdateFieldStructureValue(key, ev.target.value, this.props.funcId);
+            this.props.onUpdateFieldStructureValue(key, Number(ev.target.value), this.props.funcId);
         this.changeExtend = handleValueChange('extend');
         this.changeNature = handleValueChange('nature');
         this.changeLocation = handleValueChange('location');
@@ -37,7 +37,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={0} checked={this.props.value.extend == 0}
+                                       value={0} checked={this.props.value.extend === 0}
                                        onChange={this.changeExtend}/>{' '}
                                 0
                             </Label>
@@ -47,7 +47,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={1} checked={this.props.value.extend == 1}
+                                       value={1} checked={this.props.value.extend === 1}
                                        onChange={this.changeExtend}/>{' '}
                                 1
                             </Label>
@@ -57,7 +57,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={2} checked={this.props.value.extend == 2}
+                                       value={2} checked={this.props.value.extend === 2}
                                        onChange={this.changeExtend}/>{' '}
                                 2
                             </Label>
@@ -67,7 +67,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={3} checked={this.props.value.extend == 3}
+                                       value={3} checked={this.props.value.extend === 3}
                                        onChange={this.changeExtend}/>{' '}
                                 3
                             </Label>
@@ -77,7 +77,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={4} checked={this.props.value.extend == 4}
+                                       value={4} checked={this.props.value.extend === 4}
                                        onChange={this.changeExtend}/>{' '}
                                 4
                             </Label>
@@ -87,7 +87,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={8} checked={this.props.value.extend == 8}
+                                       value={8} checked={this.props.value.extend === 8}
                                        onChange={this.changeExtend}/>{' '}
                                 8
                             </Label>
@@ -97,7 +97,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`extend_${this.props.funcId}`}
-                                       value={9} checked={this.props.value.extend == 9}
+                                       value={9} checked={this.props.value.extend === 9}
                                        onChange={this.changeExtend}/>{' '}
                                 9
                             </Label>
@@ -112,7 +112,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={0} checked={this.props.value.nature == 0}
+                                       value={0} checked={this.props.value.nature === 0}
                                        onChange={this.changeNature}/>{' '}
                                 0
                             </Label>
@@ -122,7 +122,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={1} checked={this.props.value.nature == 1}
+                                       value={1} checked={this.props.value.nature === 1}
                                        onChange={this.changeNature}/>{' '}
                                 1
                             </Label>
@@ -132,7 +132,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={2} checked={this.props.value.nature == 2}
+                                       value={2} checked={this.props.value.nature === 2}
                                        onChange={this.changeNature}/>{' '}
                                 2
                             </Label>
@@ -142,7 +142,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={3} checked={this.props.value.nature == 3}
+                                       value={3} checked={this.props.value.nature === 3}
                                        onChange={this.changeNature}/>{' '}
                                 3
                             </Label>
@@ -152,7 +152,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={4} checked={this.props.value.nature == 4}
+                                       value={4} checked={this.props.value.nature === 4}
                                        onChange={this.changeNature}/>{' '}
                                 4
                             </Label>
@@ -162,7 +162,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={5} checked={this.props.value.nature == 5}
+                                       value={5} checked={this.props.value.nature === 5}
                                        onChange={this.changeNature}/>{' '}
                                 5
                             </Label>
@@ -172,7 +172,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={6} checked={this.props.value.nature == 6}
+                                       value={6} checked={this.props.value.nature === 6}
                                        onChange={this.changeNature}/>{' '}
                                 6
                             </Label>
@@ -182,7 +182,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={7} checked={this.props.value.nature == 7}
+                                       value={7} checked={this.props.value.nature === 7}
                                        onChange={this.changeNature}/>{' '}
                                 7
                             </Label>
@@ -192,7 +192,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={8} checked={this.props.value.nature == 8}
+                                       value={8} checked={this.props.value.nature === 8}
                                        onChange={this.changeNature}/>{' '}
                                 8
                             </Label>
@@ -202,7 +202,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`nature_${this.props.funcId}`}
-                                       value={9} checked={this.props.value.nature == 9}
+                                       value={9} checked={this.props.value.nature === 9}
                                        onChange={this.changeNature}/>{' '}
                                 9
                             </Label>
@@ -217,7 +217,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={0} checked={this.props.value.location == 0}
+                                       value={0} checked={this.props.value.location === 0}
                                        onChange={this.changeLocation}/>{' '}
                                 0
                             </Label>
@@ -227,7 +227,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={1} checked={this.props.value.location == 1}
+                                       value={1} checked={this.props.value.location === 1}
                                        onChange={this.changeLocation}/>{' '}
                                 1
                             </Label>
@@ -237,7 +237,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={2} checked={this.props.value.location == 2}
+                                       value={2} checked={this.props.value.location === 2}
                                        onChange={this.changeLocation}/>{' '}
                                 2
                             </Label>
@@ -247,7 +247,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={3} checked={this.props.value.location == 3}
+                                       value={3} checked={this.props.value.location === 3}
                                        onChange={this.changeLocation}/>{' '}
                                 3
                             </Label>
@@ -257,7 +257,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={4} checked={this.props.value.location == 4}
+                                       value={4} checked={this.props.value.location === 4}
                                        onChange={this.changeLocation}/>{' '}
                                 4
                             </Label>
@@ -267,7 +267,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={5} checked={this.props.value.location == 5}
+                                       value={5} checked={this.props.value.location === 5}
                                        onChange={this.changeLocation}/>{' '}
                                 5
                             </Label>
@@ -277,7 +277,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={6} checked={this.props.value.location == 6}
+                                       value={6} checked={this.props.value.location === 6}
                                        onChange={this.changeLocation}/>{' '}
                                 6
                             </Label>
@@ -287,7 +287,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={7} checked={this.props.value.location == 7}
+                                       value={7} checked={this.props.value.location === 7}
                                        onChange={this.changeLocation}/>{' '}
                                 7
                             </Label>
@@ -297,7 +297,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={8} checked={this.props.value.location == 8}
+                                       value={8} checked={this.props.value.location === 8}
                                        onChange={this.changeLocation}/>{' '}
                                 8
                             </Label>
@@ -307,7 +307,7 @@ class ContextValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`location_${this.props.funcId}`}
-                                       value={9} checked={this.props.value.location == 9}
+                                       value={9} checked={this.props.value.location === 9}
                                        onChange={this.changeLocation}/>{' '}
                                 9
                             </Label>

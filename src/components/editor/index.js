@@ -67,11 +67,11 @@ class Editor extends Component {
 
         this.addFunction = (type) => {
             const obj = {
-                id: `new_${Math.floor((Math.random() * 1000) + 1)}`,
+                id: -1 * Math.floor((Math.random() * 1000) + 1),
                 code: {
-                    id: ''
+                    id: -1
                 },
-                codeId: '',
+                codeId: -1,
                 description: '',
                 value: {
                     value: NaN,
@@ -130,7 +130,7 @@ class Editor extends Component {
 	}
 
     updateFunctions(reportId, func) {
-        if (typeof func.id === 'string' && func.id.includes('new_')) {
+        if (func.id <= 0) {
             this.props.onSubmitFunction(agent.Function.create(reportId, func));
         }
         else if (func.hasOwnProperty('isDirty') && func.isDirty) {
@@ -138,7 +138,7 @@ class Editor extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
 		const promises = [
 			agent.Code.all()
 		];
@@ -157,7 +157,7 @@ class Editor extends Component {
     }
     
     get hasReport() {
-        return this.props.reportId && this.props.reportId !== '';
+        return this.props.reportId && this.props.reportId !== -1;
     }
     
     render() {

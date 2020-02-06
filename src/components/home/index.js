@@ -22,7 +22,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Home extends Component {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.onLoad(Promise.all([
             agent.Report.all()
         ]));

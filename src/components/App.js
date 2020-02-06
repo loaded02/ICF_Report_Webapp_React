@@ -38,7 +38,7 @@ class App extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const token = window.localStorage.getItem('jwt');
         if (token) {
             agent.setToken(token);

@@ -38,7 +38,7 @@ class SettingsForm extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.currentUser) {
             Object.assign(this.state, {
                 username: this.props.currentUser.username,

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {
     UPDATE_FIELD_REPORT_THERAPIST
 } from "../../constants/actionTypes";
+import newId from '../../utils/newId';
 
 const mapStateToProps = state => ({
     ...state.editor.therapist
@@ -25,6 +26,11 @@ class TherapistElement extends Component {
         this.changeCompany = updateFieldEvent('company');
     }
 
+    componentDidMount() {
+        this.nameId = newId('name');
+        this.surnameId = newId('surname');
+    }
+
     render() {
         return (
             <Card>
@@ -33,7 +39,7 @@ class TherapistElement extends Component {
                     <FormGroup row>
                         <Label for="firstName" sm={2}>Name</Label>
                         <Col sm={10}>
-                            <Input type="text" name="name" id="name" placeholder="Name"
+                            <Input type="text" name="name" id={this.nameId} placeholder="Name"
                                    value={this.props.name}
                                    onChange={this.changeName}/>
                         </Col>
@@ -41,7 +47,7 @@ class TherapistElement extends Component {
                     <FormGroup row>
                         <Label for="surname" sm={2}>Surname</Label>
                         <Col sm={10}>
-                            <Input type="text" name="surname" id="surname" placeholder="Surname"
+                            <Input type="text" name="surname" id={this.surnameId} placeholder="Surname"
                                    value={this.props.surname}
                                    onChange={this.changeSurname}/>
                         </Col>

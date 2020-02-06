@@ -33,7 +33,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 codes: action.payload[0],
-				reportId: action.payload[1] ? action.payload[1].report.id : '',
+				reportId: action.payload[1] ? action.payload[1].report.id : -1,
                 patient: {name: '', surname: '', diagnosis: '', dob: null},
                 therapist: {name: "", surname: '', company: ''},
                 type: action.payload[1] ? action.payload[1].report.type : '',
@@ -48,7 +48,7 @@ export default (state = {}, action) => {
         case REPORT_UPLOADED:
             return {
                 ...state,
-                reportId: action.payload ? action.payload.id : '',
+                reportId: action.payload ? action.payload.id : -1,
                 type: action.payload ? action.payload.type : '',
                 patient: action.payload ? {
                     name: action.payload.patient.name,
