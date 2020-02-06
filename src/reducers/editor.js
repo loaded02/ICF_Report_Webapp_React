@@ -21,7 +21,10 @@ import {
     UPDATE_FIELD_STRUCTURE_VALUE,
     UPDATE_FIELD_ACTIVITY_VALUE,
     UPDATE_FIELD_CONTEXT_VALUE,
-    REPORT_UPLOADED, UPDATE_FIELD_REPORT_PATIENT, UPDATE_FIELD_REPORT_THERAPIST
+    REPORT_UPLOADED,
+    UPDATE_FIELD_REPORT_PATIENT,
+    UPDATE_FIELD_REPORT_THERAPIST,
+    FUNCTION_SUBMITTED
 } from "../constants/actionTypes";
 
 export default (state = {}, action) => {
@@ -87,6 +90,13 @@ export default (state = {}, action) => {
         case UPDATE_FIELD_REPORT_THERAPIST:
             state.therapist[action.key] = action.value;
             return {...state};
+        case FUNCTION_SUBMITTED:
+            return {
+                ...state,
+                newReport: null,
+                inProgress: null,
+                errors: action.error ? action.payload.errors : null
+            };
 		case FUNCTION_ADDED:
 			return {
 				...state,

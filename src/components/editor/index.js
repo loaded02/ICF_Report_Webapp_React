@@ -12,14 +12,15 @@ import ListErrors from '../ListErrors';
 import PatientElement from './PatientElement';
 import TherapistElement from './TherapistElement';
 import {
-	EDITOR_PAGE_LOADED,
-	EDITOR_PAGE_UNLOADED,
-	UPDATE_FIELD_REPORT,
-	GOTO,
+    EDITOR_PAGE_LOADED,
+    EDITOR_PAGE_UNLOADED,
+    UPDATE_FIELD_REPORT,
+    GOTO,
     FUNCTION_ADDED,
     STRUCTURE_ADDED,
     ACTIVITY_ADDED,
-    CONTEXT_ADDED
+    CONTEXT_ADDED,
+    FUNCTION_SUBMITTED
 } from "../../constants/actionTypes";
 
 Moment.locale('de');
@@ -39,6 +40,8 @@ const mapDispatchToProps = dispatch => ({
 		dispatch({ type: UPDATE_FIELD_REPORT, key, value }),
 	onGoto: payload =>
         dispatch({type: GOTO, payload}),
+    onSubmitFunction: payload =>
+        dispatch({type: FUNCTION_SUBMITTED, payload}),
     onAddFunction: func =>
         dispatch({type: FUNCTION_ADDED, func: func}),
     onAddStructure: struc =>
@@ -113,8 +116,6 @@ class Editor extends Component {
             this.props.contexts.forEach(con => {
                 this.updateFunctions(nextProps.newReport.id, con);
             });
-            this.props.onUnload();
-            this.props.onGoto('/');
         }
 		if (this.props.match.params.id !== nextProps.match.params.id) {
 			const promises = [
@@ -130,10 +131,10 @@ class Editor extends Component {
 
     updateFunctions(reportId, func) {
         if (func.id <= 0) {
-            agent.Function.create(reportId, func);
+            this.props.onSubmitFunction(agent.Function.create(reportId, func));
         }
         else if (func.hasOwnProperty('isDirty') && func.isDirty) {
-            agent.Function.update(reportId, func, func.id);
+            this.props.onSubmitFunction(agent.Function.update(reportId, func, func.id));
         }
     }
 
