@@ -40,7 +40,7 @@ class Settings extends Component {
             this.setState({ newUser: tempUser });
         };
 
-        this.submitForm.bind(this)
+        this.submitForm.bind(this);
     }
 
     submitForm = ev => {
