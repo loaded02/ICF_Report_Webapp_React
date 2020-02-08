@@ -9,6 +9,7 @@ import {
     LOGIN,
     LOGIN_PAGE_UNLOADED
 } from '../constants/actionTypes';
+import { Redirect } from 'react-router-dom'
 
 const mapStateToProps = state => ({ ...state.auth });
 
@@ -39,6 +40,9 @@ class Login extends Component {
     }
 
     render() {
+        if (this.props.redirectToHome) {
+            return (<Redirect to="/"/>)
+        }
         const email = this.props.email;
         const password = this.props.password;
         return (

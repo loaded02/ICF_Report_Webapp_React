@@ -7,14 +7,19 @@ import {
     UPDATE_FIELD_AUTH
 } from '../constants/actionTypes';
 
-export default (state = {}, action) => {
+const defaultState = {
+    redirectToHome: false
+};
+
+export default (state = defaultState, action) => {
     switch (action.type) {
         case LOGIN:
         case REGISTER:
             return {
                 ...state,
                 inProgress: false,
-                errors: action.error ? action.payload.errors : null
+                errors: action.error ? action.payload.errors : null,
+                redirectToHome: !action.error
             };
         case LOGIN_PAGE_UNLOADED:
         case REGISTER_PAGE_UNLOADED:

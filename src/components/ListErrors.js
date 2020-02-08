@@ -11,7 +11,7 @@ class ListErrors extends React.Component {
                         Object.keys(errors).map(key => {
                             return (
                                 <UncontrolledAlert color="danger" key={key}>
-                                    {key} {errors[key]}
+                                    {key} - {errors[key]}
                                 </UncontrolledAlert>
                             );
                         })

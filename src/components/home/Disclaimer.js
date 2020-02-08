@@ -5,13 +5,9 @@ import { Jumbotron, Button, Carousel,
     CarouselControl,
     CarouselIndicators,
     CarouselCaption  } from 'reactstrap';
-import {GOTO} from "../../constants/actionTypes";
 import './Home.css';
-
-const mapDispatchToProps = dispatch => ({
-    onGoTo: (payload) =>
-        dispatch({ type: GOTO, payload })
-});
+import { store } from '../../store';
+import { push } from 'connected-react-router';
 
 const items = [
     {
@@ -73,6 +69,9 @@ class Disclaimer extends Component {
         this.setState({ activeIndex: newIndex });
     }
 
+    goToRegister() {
+        store.dispatch(push('/register'));
+    }
 
     render() {
         const {activeIndex} = this.state;
@@ -101,7 +100,7 @@ class Disclaimer extends Component {
                     <hr className="my-2"/>
                     <p>No sensitive data has to be saved on the server.</p>
                     <p className="lead">
-                        <Button color="primary" onClick={() => this.props.onGoTo('/register')}>Sign up</Button>
+                        <Button color="primary" onClick={this.goToRegister}>Sign up</Button>
                     </p>
                 </Jumbotron>
                 <Carousel
@@ -119,4 +118,4 @@ class Disclaimer extends Component {
     }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(Disclaimer);
+export default connect(() => ({}), () => ({}))(Disclaimer);
