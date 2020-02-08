@@ -1,13 +1,28 @@
 {
-  "main.css": "static/css/main.40b7d22a.css",
-  "main.css.map": "static/css/main.40b7d22a.css.map",
-  "main.js": "static/js/main.68fd846e.js",
-  "main.js.map": "static/js/main.68fd846e.js.map",
-  "static/media/background.jpg": "static/media/background.910a6457.jpg",
-  "static/media/loader-big.gif": "static/media/loader-big.a770b679.gif",
-  "static/media/logo.svg": "static/media/logo.f6ef32c7.svg",
-  "static/media/rw-widgets.eot?v=4.1.0": "static/media/rw-widgets.bc7c4a59.eot",
-  "static/media/rw-widgets.svg?v=4.1.0": "static/media/rw-widgets.792dcd18.svg",
-  "static/media/rw-widgets.ttf?v=4.1.0": "static/media/rw-widgets.eceddf47.ttf",
-  "static/media/rw-widgets.woff?v=4.1.0": "static/media/rw-widgets.12f0820c.woff"
+  "files": {
+    "main.css": "/ICF_Report_Webapp_React/static/css/main.b3d9b13f.chunk.css",
+    "main.js": "/ICF_Report_Webapp_React/static/js/main.2f55c8f6.chunk.js",
+    "main.js.map": "/ICF_Report_Webapp_React/static/js/main.2f55c8f6.chunk.js.map",
+    "runtime-main.js": "/ICF_Report_Webapp_React/static/js/runtime-main.eb7a82bd.js",
+    "runtime-main.js.map": "/ICF_Report_Webapp_React/static/js/runtime-main.eb7a82bd.js.map",
+    "static/css/2.ee3fb633.chunk.css": "/ICF_Report_Webapp_React/static/css/2.ee3fb633.chunk.css",
+    "static/js/2.fffc939e.chunk.js": "/ICF_Report_Webapp_React/static/js/2.fffc939e.chunk.js",
+    "static/js/2.fffc939e.chunk.js.map": "/ICF_Report_Webapp_React/static/js/2.fffc939e.chunk.js.map",
+    "index.html": "/ICF_Report_Webapp_React/index.html",
+    "precache-manifest.4cf8eb6e533e4c44ed3768474611d826.js": "/ICF_Report_Webapp_React/precache-manifest.4cf8eb6e533e4c44ed3768474611d826.js",
+    "service-worker.js": "/ICF_Report_Webapp_React/service-worker.js",
+    "static/css/2.ee3fb633.chunk.css.map": "/ICF_Report_Webapp_React/static/css/2.ee3fb633.chunk.css.map",
+    "static/css/main.b3d9b13f.chunk.css.map": "/ICF_Report_Webapp_React/static/css/main.b3d9b13f.chunk.css.map",
+    "static/js/2.fffc939e.chunk.js.LICENSE": "/ICF_Report_Webapp_React/static/js/2.fffc939e.chunk.js.LICENSE",
+    "static/media/Home.css": "/ICF_Report_Webapp_React/static/media/background.910a6457.jpg",
+    "static/media/react-widgets.css": "/ICF_Report_Webapp_React/static/media/rw-widgets.eceddf47.ttf",
+    "static/media/logo.svg": "/ICF_Report_Webapp_React/static/media/logo.f6ef32c7.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.eb7a82bd.js",
+    "static/css/2.ee3fb633.chunk.css",
+    "static/js/2.fffc939e.chunk.js",
+    "static/css/main.b3d9b13f.chunk.css",
+    "static/js/main.2f55c8f6.chunk.js"
+  ]
 }
