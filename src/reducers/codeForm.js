@@ -3,7 +3,6 @@ import {
     CODE_FORM_PAGE_UNLOADED,
     CODE_SUBMITTED,
     ASYNC_START,
-    UPDATE_FIELD_CODE,
     CODE_EDITOR_PAGE_TOGGLED
 } from '../constants/actionTypes';
 
@@ -24,6 +23,7 @@ export default (state = {}, action) => {
         case CODE_FORM_PAGE_LOADED:
             return {
                 ...state,
+                codeReceived: true,
                 code: action.payload  ? action.payload.code.code : '',
                 title: action.payload  ? action.payload.code.title : '',
                 description: action.payload  ? action.payload.code.description : '',
@@ -38,8 +38,6 @@ export default (state = {}, action) => {
             };
         case CODE_FORM_PAGE_UNLOADED:
             return {};
-        case UPDATE_FIELD_CODE:
-            return { ...state, [action.key]: action.value };
         default:
             return state;
     }

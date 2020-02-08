@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 import {
     EDITOR_SIDENAV_LOADED,
     EDITOR_SIDENAV_UNLOADED,
-    REPORT_DOWNLOADED,
-    REPORT_PDF_CREATED,
     REPORT_SUBMITTED,
     REPORT_UPLOADED
 } from "../../constants/actionTypes";
@@ -13,6 +11,7 @@ import agent from "../../agent";
 import Moment from "moment/moment";
 import md5 from 'md5';
 import {API_VERSION} from "../../constants/config";
+import download from '../../utils/downloadPdf';
 
 const mapStateToProps = state => ({
     ...state.editor,
@@ -26,178 +25,125 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: EDITOR_SIDENAV_UNLOADED }),
     onSubmit: report =>
         dispatch({ type: REPORT_SUBMITTED, payload: report }),
-    onCreatePdf: blob =>
-        dispatch({type: REPORT_PDF_CREATED, payload: blob}),
-    onDownloadReport: report =>
-        dispatch({type: REPORT_DOWNLOADED, payload: report}),
     onUploadReport: report =>
         dispatch({type: REPORT_UPLOADED, payload: report})
 });
 
 class SideNav extends Component {
 
-    constructor() {
-        super();
+    submitForm = ev => {
+        if (this.props.inProgress) return;
+        ev.preventDefault();
 
-        this.submitForm = ev => {
-            if (this.props.inProgress) return;
-            ev.preventDefault();
-
-            const report = {
-                type: this.props.type,
-                patientId: this.props.patientId,
-                therapistId: this.props.therapistId,
-                date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
-                freeText: this.props.freeText
-            };
-
-            const promise = this.hasReport ?
-                agent.Report.update(report, this.props.reportId) :
-                agent.Report.create(report);
-            this.props.onSubmit(promise);
+        const report = {
+            type: this.props.type,
+            patientId: this.props.patientId,
+            therapistId: this.props.therapistId,
+            date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
+            freeText: this.props.freeText
         };
 
-        this.createPdf = (ev) => {
-            ev.preventDefault();
+        const promise = this.hasReport ?
+            agent.Report.update(report, this.props.reportId) :
+            agent.Report.create(report);
+        this.props.onSubmit(promise);
+    };
 
-            const report = {
-                type: this.props.type,
-                patient: {
-                    dob: this.props.patient.dob && Moment(this.props.patient.dob).isValid() ? Moment(this.props.patient.dob).format('YYYY-MM-DD') : null,
-                    name: this.props.patient.name,
-                    surname: this.props.patient.surname,
-                    diagnosis: this.props.patient.diagnosis
-                },
-                therapist: this.props.therapist,
-                date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
-                freeText: this.props.freeText,
-                functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
-                structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id == s.codeId)}}),
-                activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id == a.codeId)}}),
-                contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
-            };
+    createPdf = (ev) => {
+        ev.preventDefault();
 
-            this.props.onCreatePdf(agent.Report.getPdf(report));
+        const report = {
+            type: this.props.type,
+            patient: {
+                dob: this.props.patient.dob && Moment(this.props.patient.dob).isValid() ? Moment(this.props.patient.dob).format('YYYY-MM-DD') : null,
+                name: this.props.patient.name,
+                surname: this.props.patient.surname,
+                diagnosis: this.props.patient.diagnosis
+            },
+            therapist: this.props.therapist,
+            date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
+            freeText: this.props.freeText,
+            functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id === f.codeId)}}),
+            structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id === s.codeId)}}),
+            activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id === a.codeId)}}),
+            contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id === c.codeId)}})
         };
 
-        this.dump = (ev) => {
-            ev.preventDefault();
+        agent.Report.getPdf(report)
+            .then((blob) => download(blob));
+    };
 
-            const report = {
-                type: this.props.type,
-                patient: {
-                    dob: this.props.patient.dob && Moment(this.props.patient.dob).isValid() ? Moment(this.props.patient.dob).format('YYYY-MM-DD') : null,
-                    name: this.props.patient.name,
-                    surname: this.props.patient.surname,
-                    diagnosis: this.props.patient.diagnosis
-                },
-                therapist: this.props.therapist,
-                date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
-                freeText: this.props.freeText,
-                functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id == f.codeId)}}),
-                structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id == s.codeId)}}),
-                activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id == a.codeId)}}),
-                contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id == c.codeId)}})
-            };
-            report.hash = md5(JSON.stringify(report));
-            report.version = API_VERSION;
+    dump = (ev) => {
+        ev.preventDefault();
 
-            this.props.onDownloadReport(report);
+        const report = {
+            type: this.props.type,
+            patient: {
+                dob: this.props.patient.dob && Moment(this.props.patient.dob).isValid() ? Moment(this.props.patient.dob).format('YYYY-MM-DD') : null,
+                name: this.props.patient.name,
+                surname: this.props.patient.surname,
+                diagnosis: this.props.patient.diagnosis
+            },
+            therapist: this.props.therapist,
+            date: this.props.date && Moment(this.props.date).isValid() ? Moment(this.props.date).format('YYYY-MM-DD') : null,
+            freeText: this.props.freeText,
+            functions: this.props.functions.map(f => {return {...f, code: this.props.codes.find(code => code.id === f.codeId)}}),
+            structures: this.props.structures.map(s => {return {...s, code: this.props.codes.find(code => code.id === s.codeId)}}),
+            activities: this.props.activities.map(a => {return {...a, code: this.props.codes.find(code => code.id === a.codeId)}}),
+            contexts: this.props.contexts.map(c => {return {...c, code: this.props.codes.find(code => code.id === c.codeId)}})
         };
+        report.hash = md5(JSON.stringify(report));
+        report.version = API_VERSION;
 
-        this.upload = (ev) => {
-            ev.preventDefault();
-            const files = ev.target.files;
-            for (let i = 0, f; f = files[i]; i++) {
+        // download as json
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        const json = JSON.stringify(report),
+            blob = new Blob([json], {type: "application/json"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = `${report.patient.surname}_${new Date().getTime()}.json`;
+        a.click();
 
-                //Only process json files.
-                if (!f.type.match('application/json')) {
-                    continue;
-                }
+        window.URL.revokeObjectURL(url);
+        this.props.onUnload();
+    };
 
-                const reader = new FileReader();
-                // Closure to capture the file information.
-                reader.onload = ((theFile) => {
-                    return (e) => {
-                        const report = JSON.parse(e.target.result);
-                        const hash = report.hash;
-                        delete report.hash;
-                        const version = report.version;
-                        delete report.version;
-                        if (md5(JSON.stringify(report)) !== hash)
-                            alert('Report has been tampered with!');
-                        else if (API_VERSION !== version)
-                            alert('Report Format is from another version!');
-                        else
-                            this.props.onUploadReport(report);
-                    };
-                })(f);
-
-                // Read in the json file as text.
-                reader.readAsText(f, "UTF-8");
+    upload = (ev) => {
+        ev.preventDefault();
+        const files = ev.target.files;
+        if (files[0]) {
+            const f = files[0];
+            //Only process json files.
+            if (!f.type.match('application/json')) {
+                return;
             }
-        };
-    }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.blob) { //pdf created
-            const res = nextProps.blob;
-            let filename = "";
-            const disposition = res.header['content-disposition'];
-            if (disposition && disposition.indexOf('attachment') !== -1) {
-                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                const matches = filenameRegex.exec(disposition);
-                if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-            }
-            const blob = new Blob([res.body], {type: res.type});
-            if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                window.navigator.msSaveBlob(blob, filename);
-            } else {
-                const URL = window.URL || window.webkitURL;
-                const downloadUrl = URL.createObjectURL(blob);
+            const reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = ((theFile) => {
+                return (e) => {
+                    const report = JSON.parse(e.target.result);
+                    const hash = report.hash;
+                    delete report.hash;
+                    const version = report.version;
+                    delete report.version;
+                    if (md5(JSON.stringify(report)) !== hash)
+                        alert('Report has been tampered with!');
+                    else if (API_VERSION !== version)
+                        alert('Report Format is from another version!');
+                    else
+                        this.props.onUploadReport(report);
+                };
+            })(f);
 
-                if (filename) {
-                    // use HTML5 a[download] attribute to specify filename
-                    const a = document.createElement("a");
-                    // safari doesn't support this yet
-                    if (typeof a.download === 'undefined') {
-                        //window.location = downloadUrl;
-                        window.open(downloadUrl, '_blank');
-                    } else {
-                        a.href = downloadUrl;
-                        a.download = filename;
-                        document.body.appendChild(a);
-                        a.setAttribute("target","_blank");
-                        a.click();
-                    }
-                } else {
-                    //window.location = downloadUrl;
-                    window.open(downloadUrl, '_blank');
-                }
-
-                setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-                this.props.onUnload();
-            }
+            // Read in the json file as text.
+            reader.readAsText(f, "UTF-8");
         }
-        else if (nextProps.download) { // download pdf
-            const report = nextProps.download;
-            const a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            const json = JSON.stringify(report),
-                blob = new Blob([json], {type: "application/json"}),
-                url = window.URL.createObjectURL(blob);
-            a.href = url;
-            a.download = `${report.patient.surname}_${new Date().getTime()}.json`;
-            a.click();
+    };
 
-            window.URL.revokeObjectURL(url);
-            this.props.onUnload();
-        }
-    }
-
-    componentWillMount() {
+    componentDidMount() {
         this.props.onLoad({});
     }
 

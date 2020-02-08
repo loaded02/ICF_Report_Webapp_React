@@ -20,7 +20,8 @@ class FunctionValue extends Component {
         super();
 
         this.handleValueChange = ev => {
-            this.props.onUpdateFieldFunctionValue('value', ev.target.value, this.props.funcId);
+            const val = Number(ev.target.value)
+            this.props.onUpdateFieldFunctionValue('value', val, this.props.funcId);
         };
     }
 
@@ -32,7 +33,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={0} checked={this.props.value.value == 0}
+                                       value={0} checked={this.props.value.value === 0}
                                        onChange={this.handleValueChange}/>{' '}
                                 0
                             </Label>
@@ -42,7 +43,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={1} checked={this.props.value.value == 1}
+                                       value={1} checked={this.props.value.value === 1}
                                        onChange={this.handleValueChange}/>{' '}
                                 1
                             </Label>
@@ -52,7 +53,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={2} checked={this.props.value.value == 2}
+                                       value={2} checked={this.props.value.value === 2}
                                        onChange={this.handleValueChange}/>{' '}
                                 2
                             </Label>
@@ -62,7 +63,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={3} checked={this.props.value.value == 3}
+                                       value={3} checked={this.props.value.value === 3}
                                        onChange={this.handleValueChange}/>{' '}
                                 3
                             </Label>
@@ -72,7 +73,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={4} checked={this.props.value.value == 4}
+                                       value={4} checked={this.props.value.value === 4}
                                        onChange={this.handleValueChange}/>{' '}
                                 4
                             </Label>
@@ -82,7 +83,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={8} checked={this.props.value.value == 8}
+                                       value={8} checked={this.props.value.value === 8}
                                        onChange={this.handleValueChange}/>{' '}
                                 8
                             </Label>
@@ -92,7 +93,7 @@ class FunctionValue extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="radio" name={`severity_${this.props.funcId}`}
-                                       value={9} checked={this.props.value.value == 9}
+                                       value={9} checked={this.props.value.value === 9}
                                        onChange={this.handleValueChange}/>{' '}
                                 9
                             </Label>

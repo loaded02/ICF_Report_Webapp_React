@@ -12,14 +12,14 @@ import ListErrors from '../ListErrors';
 import PatientElement from './PatientElement';
 import TherapistElement from './TherapistElement';
 import {
-	EDITOR_PAGE_LOADED,
-	EDITOR_PAGE_UNLOADED,
-	UPDATE_FIELD_REPORT,
-	GOTO,
+    EDITOR_PAGE_LOADED,
+    EDITOR_PAGE_UNLOADED,
+    UPDATE_FIELD_REPORT,
     FUNCTION_ADDED,
     STRUCTURE_ADDED,
     ACTIVITY_ADDED,
-    CONTEXT_ADDED
+    CONTEXT_ADDED,
+    FUNCTION_SUBMITTED
 } from "../../constants/actionTypes";
 
 Moment.locale('de');
@@ -37,8 +37,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: EDITOR_PAGE_UNLOADED }),
 	onUpdateField: (key, value) =>
 		dispatch({ type: UPDATE_FIELD_REPORT, key, value }),
-	onGoto: payload =>
-        dispatch({type: GOTO, payload}),
+    onSubmitFunction: payload =>
+        dispatch({type: FUNCTION_SUBMITTED, payload}),
     onAddFunction: func =>
         dispatch({type: FUNCTION_ADDED, func: func}),
     onAddStructure: struc =>
@@ -64,11 +64,11 @@ class Editor extends Component {
 
         this.addFunction = (type) => {
             const obj = {
-                id: `new_${Math.floor((Math.random() * 1000) + 1)}`,
+                id: -1 * Math.floor((Math.random() * 1000) + 1),
                 code: {
-                    id: ''
+                    id: -1
                 },
-                codeId: '',
+                codeId: -1,
                 description: '',
                 value: {
                     value: NaN,
@@ -99,28 +99,28 @@ class Editor extends Component {
         };
 	}
 	
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.newReport) { // successful update/insert
+	componentDidUpdate(prevProps) {
+		if (this.props.newReport) { 
+            // successful update/insert
             this.props.functions.forEach(func => {
-               this.updateFunctions(nextProps.newReport.id, func);
+               this.updateFunctions(this.props.newReport.id, func);
             });
             this.props.structures.forEach(struc => {
-                this.updateFunctions(nextProps.newReport.id, struc);
+                this.updateFunctions(this.props.newReport.id, struc);
             });
             this.props.activities.forEach(act => {
-                this.updateFunctions(nextProps.newReport.id, act);
+                this.updateFunctions(this.props.newReport.id, act);
             });
             this.props.contexts.forEach(con => {
-                this.updateFunctions(nextProps.newReport.id, con);
+                this.updateFunctions(this.props.newReport.id, con);
             });
-            this.props.onUnload();
-            this.props.onGoto('/');
         }
-		if (this.props.match.params.id !== nextProps.match.params.id) {
+		if (prevProps.match.params.id !== this.props.match.params.id) {
+            // router url param :id has changed
 			const promises = [
 				agent.Code.all()
 			];
-			if (nextProps.match.params.id) {
+			if (this.props.match.params.id) {
 				promises.push(agent.Report.get(this.props.match.params.id));
 			}
 			this.props.onUnload();
@@ -129,19 +129,20 @@ class Editor extends Component {
 	}
 
     updateFunctions(reportId, func) {
-        if (typeof func.id === 'string' && func.id.includes('new_')) {
-            agent.Function.create(reportId, func);
+        if (func.id <= 0) {
+            this.props.onSubmitFunction(agent.Function.create(reportId, func));
         }
         else if (func.hasOwnProperty('isDirty') && func.isDirty) {
-            agent.Function.update(reportId, func, func.id);
+            this.props.onSubmitFunction(agent.Function.update(reportId, func, func.id));
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
 		const promises = [
 			agent.Code.all()
 		];
 		if (this.props.match.params.id) {
+            // router url param :id
             promises.push(agent.Report.get(this.props.match.params.id));
             promises.push(agent.Function.all(this.props.match.params.id, 'FUNCTION'));
             promises.push(agent.Function.all(this.props.match.params.id, 'STRUCTURE'));
@@ -156,7 +157,7 @@ class Editor extends Component {
     }
     
     get hasReport() {
-        return this.props.reportId && this.props.reportId !== '';
+        return this.props.reportId && this.props.reportId !== -1;
     }
     
     render() {

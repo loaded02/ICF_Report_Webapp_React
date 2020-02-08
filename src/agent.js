@@ -101,7 +101,7 @@ const Therapist = {
 
 const Code = {
     all: () =>
-        requests.get('/code'),
+        requests.get('code'),
     get: codeId =>
         requests.get(`code/${codeId}`),
     create: code =>

@@ -21,7 +21,10 @@ import {
     UPDATE_FIELD_STRUCTURE_VALUE,
     UPDATE_FIELD_ACTIVITY_VALUE,
     UPDATE_FIELD_CONTEXT_VALUE,
-    REPORT_UPLOADED, UPDATE_FIELD_REPORT_PATIENT, UPDATE_FIELD_REPORT_THERAPIST
+    REPORT_UPLOADED,
+    UPDATE_FIELD_REPORT_PATIENT,
+    UPDATE_FIELD_REPORT_THERAPIST,
+    FUNCTION_SUBMITTED
 } from "../constants/actionTypes";
 
 export default (state = {}, action) => {
@@ -30,7 +33,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 codes: action.payload[0],
-				reportId: action.payload[1] ? action.payload[1].report.id : '',
+				reportId: action.payload[1] ? action.payload[1].report.id : -1,
                 patient: {name: '', surname: '', diagnosis: '', dob: null},
                 therapist: {name: "", surname: '', company: ''},
                 type: action.payload[1] ? action.payload[1].report.type : '',
@@ -45,7 +48,7 @@ export default (state = {}, action) => {
         case REPORT_UPLOADED:
             return {
                 ...state,
-                reportId: action.payload ? action.payload.id : '',
+                reportId: action.payload ? action.payload.id : -1,
                 type: action.payload ? action.payload.type : '',
                 patient: action.payload ? {
                     name: action.payload.patient.name,
@@ -87,6 +90,13 @@ export default (state = {}, action) => {
         case UPDATE_FIELD_REPORT_THERAPIST:
             state.therapist[action.key] = action.value;
             return {...state};
+        case FUNCTION_SUBMITTED:
+            return {
+                ...state,
+                newReport: null,
+                inProgress: null,
+                errors: action.error ? action.payload.errors : null
+            };
 		case FUNCTION_ADDED:
 			return {
 				...state,

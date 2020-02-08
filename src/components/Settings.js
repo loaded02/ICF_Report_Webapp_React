@@ -9,84 +9,87 @@ import {
     LOGOUT
 } from '../constants/actionTypes';
 
-class SettingsForm extends Component {
+const mapStateToProps = state => ({
+    ...state.settings,
+    currentUser: state.common.currentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+    onClickLogout: () => dispatch({ type: LOGOUT }),
+    onSubmitForm: user =>
+        dispatch({ type: SETTINGS_SAVED, payload: user }),
+    onUnload: () => dispatch({ type: SETTINGS_PAGE_UNLOADED })
+});
+
+class Settings extends Component {
     constructor() {
         super();
 
         this.state = {
-            username: '',
-            firstname: '',
-            lastname: '',
-            email: ''
-        };
-
-        this.updateState = field => ev => {
-            const state = this.state;
-            const newState = Object.assign({}, state, { [field]: ev.target.value });
-            this.setState(newState);
-        };
-
-        this.submitForm = ev => {
-            ev.preventDefault();
-
-            const user = Object.assign({}, this.state);
-            if (!user.password) {
-                delete user.password;
+            newUser: {
+                firstname: '',
+                lastname: '',
+                username: '',
+                email: '',
             }
+        }
 
-            this.props.onSubmitForm(user);
+        this.updateState = ev => {
+            const tempUser = this.state.newUser;
+            Object.assign(tempUser, {[ev.target.name]: ev.target.value})
+            this.setState({ newUser: tempUser });
         };
+
+        this.submitForm.bind(this);
     }
 
-    componentWillMount() {
-        if (this.props.currentUser) {
-            Object.assign(this.state, {
-                username: this.props.currentUser.username,
-                firstname: this.props.currentUser.firstname || '',
-                lastname: this.props.currentUser.lastname || '',
-                email: this.props.currentUser.email
-            });
-        }
-    }
+    submitForm = ev => {
+        ev.preventDefault();
+        this.props.onSubmitForm(agent.Auth.save(this.state.newUser));
+    };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.currentUser) {
-            this.setState(Object.assign({}, this.state, {
-                username: nextProps.currentUser.username,
-                firstname: nextProps.currentUser.firstname || '',
-                lastname: nextProps.currentUser.lastname || '',
-                email: nextProps.currentUser.email
-            }));
-        }
-    }
+    componentDidMount() {
+        this.setState({ newUser: {
+            firstname: this.props.currentUser.firstname || '',
+            lastname: this.props.currentUser.lastname || '',
+            username: this.props.currentUser.username || '',
+            email: this.props.currentUser.email || ''
+         }
+        });
+      }
 
     render() {
         return (
-            <Form onSubmit={this.submitForm} className="form--settings">
+            <div className="container main">
+                <h1>Your Settings</h1>
+
+                <ListErrors errors={this.props.errors} />
+
+                <Form onSubmit={this.submitForm} className="form--settings">
                 <FormGroup row>
                     <Label for="firstName" sm={2}>Firstname</Label>
                     <Col sm={10}>
-                        <Input type="text" name="firsName"
+                        <Input type="text" name="firstname"
                                id="firstName" placeholder="Firstname"
-                               value={this.state.firstname}
-                               onChange={this.updateState('firstname')}/>
+                               value={this.state.newUser.firstname}
+                               onChange={this.updateState}/>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
                     <Label for="lastName" sm={2}>Lastname</Label>
                     <Col sm={10}>
-                        <Input type="text" name="lastName"
-                               value={this.state.lastname}
-                               onChange={this.updateState('lastname')}
+                        <Input type="text" name="lastname"
+                               value={this.state.newUser.lastname}
+                               onChange={this.updateState}
                                id="lastName" placeholder="Lastname"/>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
                     <Label for="userName" sm={2}>Username</Label>
                     <Col sm={10}>
-                        <Input type="text" name="userName"
-                               value={this.state.username}
-                               onChange={this.updateState('username')}
+                        <Input type="text" name="username"
+                               value={this.state.newUser.username}
+                               onChange={this.updateState}
                                id="userName" placeholder="Username"/>
                     </Col>
                 </FormGroup>
@@ -94,8 +97,8 @@ class SettingsForm extends Component {
                     <Label for="email" sm={2}>Email</Label>
                     <Col sm={10}>
                         <Input type="email" name="email"
-                               value={this.state.email}
-                               onChange={this.updateState('email')}
+                               value={this.state.newUser.email}
+                               onChange={this.updateState}
                                id="email" placeholder="Email" />
                     </Col>
                 </FormGroup>
@@ -113,39 +116,12 @@ class SettingsForm extends Component {
                 </FormGroup>
                 <FormGroup check row>
                     <Col sm={{size:10, offset:2}}>
-                        <Button color="primary" type="submit" disabled={this.state.inProgress}>
+                        <Button color="primary" type="submit" disabled={this.props.inProgress}>
                             Save
                         </Button>
                     </Col>
                 </FormGroup>
             </Form>
-        );
-    }
-}
-
-const mapStateToProps = state => ({
-    ...state.settings,
-    currentUser: state.common.currentUser
-});
-
-const mapDispatchToProps = dispatch => ({
-    onClickLogout: () => dispatch({ type: LOGOUT }),
-    onSubmitForm: user =>
-        dispatch({ type: SETTINGS_SAVED, payload: agent.Auth.save(user) }),
-    onUnload: () => dispatch({ type: SETTINGS_PAGE_UNLOADED })
-});
-
-class Settings extends Component {
-    render() {
-        return (
-            <div className="container main">
-                <h1>Your Settings</h1>
-
-                <ListErrors errors={this.props.errors} />
-
-                <SettingsForm
-                    currentUser={this.props.currentUser}
-                    onSubmitForm={this.props.onSubmitForm} />
 
                 <hr />
                 <Button color="danger" onClick={this.props.onClickLogout}>Or click here to logout.</Button>
