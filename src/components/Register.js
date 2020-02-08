@@ -9,6 +9,7 @@ import {
     REGISTER,
     REGISTER_PAGE_UNLOADED
 } from '../constants/actionTypes';
+import { Redirect } from 'react-router-dom'
 
 const mapStateToProps = state => ({ ...state.auth });
 
@@ -50,6 +51,9 @@ class Register extends Component {
     }
 
     render() {
+        if (this.props.redirectToHome) {
+            return (<Redirect to="/"/>)
+        }
         const email = this.props.email;
         const password = this.props.password;
         const username = this.props.username;
