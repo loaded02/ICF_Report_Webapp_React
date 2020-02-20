@@ -12,6 +12,7 @@ import Editor from './editor/index';
 import Settings from '../components/Settings';
 import Code from '../components/code/index';
 import agent from '../agent';
+import ProtectedRoute from '../utils/ProtectedRoute';
 
 const mapStateToProps = state => ({
     appLoaded: state.common.appLoaded,
@@ -46,10 +47,10 @@ class App extends Component {
                         <Route exact path="/" component={Home}/>
                         <Route path="/login" component={Login} />
                         <Route path="/register" component={Register} />
-                        <Route path="/editor/:id" component={Editor} />
-                        <Route path="/editor" component={Editor} />
-                        <Route path="/code" component={Code} />
-                        <Route path="/settings" component={Settings} />
+                        <ProtectedRoute path="/editor/:id" component={Editor} currentUser={this.props.currentUser}/>
+                        <ProtectedRoute path="/editor" component={Editor} currentUser={this.props.currentUser}/>
+                        <ProtectedRoute path="/code" component={Code} currentUser={this.props.currentUser}/>
+                        <ProtectedRoute path="/settings" component={Settings} currentUser={this.props.currentUser}/>
                         <Route component={NoMatch} />
                     </Switch>
                 </div>
