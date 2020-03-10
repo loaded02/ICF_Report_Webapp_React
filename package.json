@@ -1,6 +1,6 @@
 {
   "name": "icf-report-react-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://loaded02.github.io/ICF_Report_Webapp_React",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
