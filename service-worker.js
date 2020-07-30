@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ICF_Report_Webapp_React/precache-manifest.e67fe1ef04325a5807a3274538528398.js"
+  "/ICF_Report_Webapp_React/precache-manifest.ebab332c5d707619f8332d1b85ed77aa.js"
 );
 
 self.addEventListener('message', (event) => {
