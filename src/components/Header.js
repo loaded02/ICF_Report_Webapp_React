@@ -28,7 +28,7 @@ const LoggedOutView = props => {
                     <Link to="/register" className="nav-link">Sign up</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="https://loaded02.github.io/ICF_Report_Webapp/" target="_blank"
+                    <a className="nav-link" href="https://loaded02.github.io/ICF_Report_Webapp_Blog/" target="_blank"
                        rel="noopener noreferrer">Blog</a>
                 </li>
             </ul>
@@ -65,7 +65,7 @@ const LoggedInView = props => {
                     </DropdownMenu>
                 </UncontrolledDropdown>
                 <li className="nav-item">
-                    <a className="nav-link" href="https://loaded02.github.io/ICF_Report_Webapp/" target="_blank"
+                    <a className="nav-link" href="https://loaded02.github.io/ICF_Report_Webapp_Blog/" target="_blank"
                        rel="noopener noreferrer">Blog</a>
                 </li>
             </ul>
