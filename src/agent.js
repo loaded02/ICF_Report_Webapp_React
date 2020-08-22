@@ -3,7 +3,7 @@ import _superagent from 'superagent';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const API_ROOT = 'https://server1.hilberg-it.de:443/app/api/';
+const API_ROOT = 'https://server1.hilberg-it.de:443/icf-report-app/api/';
 //const API_ROOT = 'http://localhost:80/app/api/';
 
 const encode = encodeURIComponent;
